@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-ink: #0b0f1a;
+  --color-ink-2: #141a2a;
+  --color-ink-3: #232a3d;
+  --color-paper: #f8f5ff;
+  --color-white: #ffffff;
+  --color-line: #ece8f5;
+  --color-line-dark: #2a3146;
+  --color-body: #3a4050;
+  --color-muted: #6b7080;
+  --color-muted-dark: #9aa0b2;
+  --color-accent: #8a3fd1;
+  --color-accent-strong: #6f2fb0;
+  --color-accent-soft: #f1e8fb;
+
+  /* Brand palette from the Srinishtha logo */
+  --color-brand-orange: #ff8b26;
+  --color-brand-pink: #e54b7a;
+  --color-brand-purple: #8a3fd1;
+  --color-brand-cyan: #39c4d6;
+  --color-brand-gold: #c99a0a;
+  --color-danger: #b42318;
+  --color-success: #1f7a4d;
+
+  --text-display: clamp(2.25rem, 1.5rem + 2.8vw, 4rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.032em;
+  --text-headline: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+  --text-headline--line-height: 1.1;
+  --text-headline--letter-spacing: -0.025em;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 5.5rem;
+  }
+  body {
+    @apply bg-white font-sans text-body;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4 {
+    @apply text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    background-image: linear-gradient(120deg, var(--color-brand-orange), var(--color-brand-pink) 50%, var(--color-brand-purple));
+  }
+  .text-brand-gradient {
+    background-image: linear-gradient(120deg, var(--color-brand-orange), var(--color-brand-pink) 55%, var(--color-brand-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .reveal {
+    animation: reveal 600ms var(--ease-out-soft) both;
+  }
+}
+
+/* Scroll reveal: enabled only once JS has started (html.reveal-ready), so content
+   is never hidden if scripts fail. Elements opt in with data-reveal. */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease-out-soft), transform 600ms var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
