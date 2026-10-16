@@ -46,7 +46,7 @@ export function AppShell() {
       <SiteFooter company={site.company} navigation={site.navigation} capabilities={site.capabilities} />
       <MobileTabBar navigation={site.navigation} menus={buildMenus(site)} />
       {/* keeps the footer clear of the bottom tab bar on phones */}
-      <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-bottom))] lg:hidden" />
+      <div aria-hidden="true" className="h-[calc(4rem+1px+env(safe-area-inset-bottom))] lg:hidden" />
     </>
   )
 }
