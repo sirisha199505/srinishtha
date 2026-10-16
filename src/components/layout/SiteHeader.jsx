@@ -68,7 +68,7 @@ export function SiteHeader({ company, navigation, menus, cta, overHero }) {
           <img src={company.logo} alt={company.name} width="160" height="34" className="h-8 w-auto" />
         </Link>
 
-        <nav ref={navRef} aria-label="Primary" className="hidden lg:block">
+        <nav ref={navRef} aria-label="Primary" className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {navigation.primary.map((item) => {
               const items = item.menu && menus[item.menu]
@@ -111,7 +111,7 @@ export function SiteHeader({ company, navigation, menus, cta, overHero }) {
             </Button>
           </div>
           <button
-            className={cx('rounded-md p-2 lg:hidden', light ? 'text-white' : 'text-ink')}
+            className={cx('rounded-md p-2 xl:hidden', light ? 'text-white' : 'text-ink')}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -123,7 +123,7 @@ export function SiteHeader({ company, navigation, menus, cta, overHero }) {
       </Container>
 
       {mobileOpen && (
-        <nav id="mobile-nav" aria-label="Mobile" className="h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-line bg-white lg:hidden">
+        <nav id="mobile-nav" aria-label="Mobile" className="h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-line bg-white xl:hidden">
           <Container className="py-6">
             <ul className="divide-y divide-line border-b border-line">
               {navigation.primary.map((item) => (
