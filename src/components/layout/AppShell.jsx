@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useSite } from '../../content/SiteProvider'
 import { useReveal } from '../../hooks/useReveal'
+import { MobileTabBar } from './MobileTabBar'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader, buildMenus } from './SiteHeader'
 
@@ -37,9 +38,15 @@ export function AppShell() {
         overHero={pathname === '/'}
       />
       <main id="main" ref={mainRef}>
-        <Outlet />
+        {/* Only the page content waits for its code; header and tab bar stay mounted */}
+        <Suspense fallback={<div className="min-h-screen" />}>
+          <Outlet />
+        </Suspense>
       </main>
       <SiteFooter company={site.company} navigation={site.navigation} capabilities={site.capabilities} />
+      <MobileTabBar navigation={site.navigation} menus={buildMenus(site)} />
+      {/* keeps the footer clear of the bottom tab bar on phones */}
+      <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-bottom))] lg:hidden" />
     </>
   )
 }

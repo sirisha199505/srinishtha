@@ -59,6 +59,38 @@ export const EyeOff = (p) => (
     <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18" />
   </Icon>
 )
+export const Home = (p) => (
+  <Icon {...p}>
+    <path d="m3 10.5 9-7 9 7V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" />
+  </Icon>
+)
+export const Grid = (p) => (
+  <Icon {...p}>
+    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+  </Icon>
+)
+export const Layers = (p) => (
+  <Icon {...p}>
+    <path d="m12 3 9 5-9 5-9-5Z" />
+    <path d="m3 13 9 5 9-5" />
+  </Icon>
+)
+export const Briefcase = (p) => (
+  <Icon {...p}>
+    <rect x="3" y="7" width="18" height="13" rx="2" />
+    <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18" />
+  </Icon>
+)
+export const Dots = (p) => (
+  <Icon {...p}>
+    <circle cx="5" cy="12" r="1.25" />
+    <circle cx="12" cy="12" r="1.25" />
+    <circle cx="19" cy="12" r="1.25" />
+  </Icon>
+)
 export const Mail = (p) => (
   <Icon {...p}>
     <rect x="3" y="5" width="18" height="14" rx="2" />
