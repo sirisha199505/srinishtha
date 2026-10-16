@@ -11,8 +11,9 @@ export default defineConfig({
     proxy: { '/api': API_TARGET, '/uploads': API_TARGET },
   },
   build: {
-    // Roda serves the built SPA from backend/public (see backend/src/routes.rb)
-    outDir: '../backend/public',
+    // Vercel (and other static hosts) expect dist/. Locally, Roda serves the SPA
+    // from backend/public (see backend/src/routes.rb). BUILD_OUT_DIR overrides both.
+    outDir: process.env.BUILD_OUT_DIR || (process.env.VERCEL ? 'dist' : '../backend/public'),
     emptyOutDir: true,
   },
 })
