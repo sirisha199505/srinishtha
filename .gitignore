@@ -1,27 +1,18 @@
 # Dependencies
 node_modules/
-backend/vendor/
 
-# Secrets — never commit
+# Build output (vite builds into ../backend/public; dist/ if run standalone)
+dist/
+
+# Environment files — never commit
 .env
 .env.*
 !.env.example
 
-# Build output (regenerate with `npm run build` in frontend/)
-backend/public/
-
-# Admin uploads (keep the folder only)
-backend/uploads/*
-!backend/uploads/.gitkeep
-
 # Logs, OS and editor files
 *.log
-log/
-tmp/
+npm-debug.log*
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
-
-# Internal client documents
-*.pdf
