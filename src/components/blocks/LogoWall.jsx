@@ -1,11 +1,15 @@
 import { cx } from '../../lib/cx'
 
-// One client mark: the logo at a uniform height, or a wordmark when there is no logo file.
-// `dark` = light logo that needs a dark backing; `bg` = brand colour for the wordmark.
+// One client mark at a balanced size: the logo is fitted inside a fixed box, so square
+// marks render taller and wide marks narrower, giving every logo similar visual weight.
+// No logo file → a compact wordmark. `dark` = light logo on a dark backing; `bg` = brand colour.
 function LogoMark({ client }) {
   if (!client.logo) {
     return (
-      <span className="text-[0.9375rem] font-bold tracking-tight whitespace-nowrap sm:text-base" style={{ color: client.bg || 'var(--color-ink)' }}>
+      <span
+        className="max-w-[7.5rem] text-center text-[0.8125rem] leading-tight font-bold tracking-tight sm:text-sm"
+        style={{ color: client.bg || 'var(--color-ink)' }}
+      >
         {client.name}
       </span>
     )
@@ -15,20 +19,28 @@ function LogoMark({ client }) {
       src={client.logo}
       alt={client.name}
       loading="lazy"
-      className={cx('h-7 w-auto max-w-[110px] object-contain sm:h-9 sm:max-w-[140px]', !client.dark && 'mix-blend-multiply')}
+      className={cx('h-full w-full object-contain', !client.dark && 'mix-blend-multiply')}
     />
   )
-  return client.dark ? <span className="flex rounded-lg bg-ink p-1.5">{img}</span> : img
+  return client.dark ? (
+    <span className="flex size-10 rounded-lg bg-ink p-1 sm:size-11">{img}</span>
+  ) : (
+    <span className="flex h-9 w-[5.5rem] sm:h-10 sm:w-28">{img}</span>
+  )
 }
 
-// Borderless "logo cloud": marks at an even height, centred and wrapping naturally.
+// Logo cloud: an even, borderless 3/4-column layout on phones and tablets,
+// a flowing centred row on desktop.
 export function LogoWall({ clients, label }) {
   return (
     <div>
       {label && <p className="mb-8 text-center text-sm text-muted">{label}</p>}
-      <ul data-reveal className="flex flex-wrap items-center justify-center gap-x-8 gap-y-7 sm:gap-x-12 sm:gap-y-10">
+      <ul
+        data-reveal
+        className="grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 sm:gap-x-8 lg:flex lg:flex-wrap lg:items-center lg:justify-center lg:gap-x-14 lg:gap-y-10"
+      >
         {clients.map((c) => (
-          <li key={c.name} title={c.name} className="flex items-center opacity-90 transition-opacity hover:opacity-100">
+          <li key={c.name} title={c.name} className="flex h-11 items-center justify-center">
             <LogoMark client={c} />
           </li>
         ))}
