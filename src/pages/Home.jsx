@@ -7,6 +7,7 @@ import { FeatureGrid } from '../components/blocks/FeatureGrid'
 import { FrameworkExplorer } from '../components/blocks/FrameworkExplorer'
 import { HomeHero } from '../components/blocks/HomeHero'
 import { LogoWall } from '../components/blocks/LogoWall'
+import { ProductRow } from '../components/blocks/ProductRow'
 import { Quote } from '../components/blocks/Quote'
 import { StepFlow } from '../components/blocks/StepFlow'
 import { ClosingCta } from '../components/layout/ClosingCta'
@@ -25,7 +26,11 @@ export default function Home() {
       <HomeHero hero={site.hero} cta={site.ctas.global} stats={site.stats} />
 
       <Section className="!py-10 sm:!py-12">
-        <LogoWall clients={site.clients} label={home.trustLabel} marquee />
+        <LogoWall
+          clients={[...site.clients, ...site.products.items.map((p) => ({ name: p.name, logo: p.logo }))]}
+          label={home.trustLabel}
+          compact
+        />
       </Section>
 
       <Section tone="paper">
@@ -49,6 +54,11 @@ export default function Home() {
       </Section>
 
       <Section tone="paper">
+        <SectionHeading {...home.products} action={<MoreLink link={home.products.link} />} />
+        <ProductRow product={site.products.items[0]} storyLabel={site.labels.products.caseStudy} />
+      </Section>
+
+      <Section>
         <SectionHeading {...site.automationFlow} />
         <StepFlow steps={site.automationFlow.steps} />
       </Section>

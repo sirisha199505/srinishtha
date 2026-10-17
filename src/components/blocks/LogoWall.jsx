@@ -2,12 +2,13 @@ import { cx } from '../../lib/cx'
 
 // One client logo on a uniform card. `dark` = light logo on a dark card;
 // `bg` = a brand colour card (text shown in white).
-function LogoCard({ client }) {
+function LogoCard({ client, compact }) {
   const branded = Boolean(client.bg)
   return (
     <div
       className={cx(
-        'flex h-20 items-center justify-center rounded-xl border px-5',
+        'flex items-center justify-center rounded-xl border',
+        compact ? 'h-14 px-2 sm:h-20 sm:px-4' : 'h-20 px-4',
         client.dark ? 'border-ink bg-ink' : branded ? 'border-transparent' : 'border-line bg-white',
       )}
       style={branded ? { background: client.bg } : undefined}
@@ -18,11 +19,11 @@ function LogoCard({ client }) {
           src={client.logo}
           alt={client.name}
           loading="lazy"
-          className={cx('max-h-10 w-auto max-w-[120px] object-contain', !client.dark && !branded && 'mix-blend-multiply')}
+          className={cx('max-h-8 w-auto max-w-full object-contain sm:max-h-10 sm:max-w-[120px]', !client.dark && !branded && 'mix-blend-multiply')}
         />
       ) : (
         // Clients without a logo file get a clean wordmark.
-        <span className={cx('text-center text-sm leading-tight font-semibold tracking-tight', branded || client.dark ? 'text-white' : 'text-ink')}>
+        <span className={cx('text-center text-[0.6875rem] leading-tight font-semibold tracking-tight sm:text-sm', branded || client.dark ? 'text-white' : 'text-ink')}>
           {client.name}
         </span>
       )}
@@ -30,30 +31,18 @@ function LogoCard({ client }) {
   )
 }
 
-// `marquee`: a slow, continuous logo strip (home). Default: a uniform grid (About).
-export function LogoWall({ clients, label, marquee = false }) {
+// Uniform grid of client logo cards.
+export function LogoWall({ clients, label, compact = false }) {
   return (
     <div>
       {label && <p className="mb-6 text-center text-sm text-muted sm:text-left">{label}</p>}
-      {marquee ? (
-        <div className="logo-marquee group relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
-          <ul className="logo-track flex w-max gap-4 group-hover:[animation-play-state:paused]">
-            {[...clients, ...clients].map((c, i) => (
-              <li key={`${c.name}-${i}`} aria-hidden={i >= clients.length ? true : undefined} className="w-40 shrink-0 sm:w-48">
-                <LogoCard client={c} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <ul data-reveal className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
-          {clients.map((c) => (
-            <li key={c.name}>
-              <LogoCard client={c} />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul data-reveal className={cx('grid gap-3 sm:gap-4 lg:grid-cols-5', compact ? 'grid-cols-3 sm:grid-cols-4' : 'grid-cols-2 sm:grid-cols-3')}>
+        {clients.map((c) => (
+          <li key={c.name}>
+            <LogoCard client={c} compact={compact} />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
