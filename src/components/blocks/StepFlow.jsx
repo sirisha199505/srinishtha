@@ -7,15 +7,17 @@ export function StepFlow({ steps, inverse = false }) {
   return (
     <ol className={cx('grid gap-px sm:grid-cols-2', cols, inverse ? 'bg-line-dark' : 'bg-line')}>
       {steps.map((s, i) => (
-        <li key={s.title} data-reveal style={revealDelay(i, 90)} className={cx('relative p-5 sm:p-6', inverse ? 'bg-ink' : 'bg-white')}>
-          <div className="mb-5 flex items-center gap-3">
+        <li key={s.title} data-reveal style={revealDelay(i, 90)} className={cx('relative flex items-start gap-4 p-4 sm:block sm:p-6', inverse ? 'bg-ink' : 'bg-white')}>
+          <div className="flex shrink-0 items-center gap-3 sm:mb-5">
             <span className="flex size-8 items-center justify-center rounded-full text-sm font-semibold text-white tabular-nums" style={{ background: brandColor(i) }}>
               {i + 1}
             </span>
-            {i < steps.length - 1 && <span aria-hidden="true" className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${brandColor(i)}, ${brandColor(i + 1)})` }} />}
+            {i < steps.length - 1 && <span aria-hidden="true" className="hidden h-px flex-1 sm:block" style={{ background: `linear-gradient(90deg, ${brandColor(i)}, ${brandColor(i + 1)})` }} />}
           </div>
-          <h3 className="text-[1.0625rem] font-semibold">{s.title}</h3>
-          <p className={cx('mt-2 text-[0.9375rem] leading-relaxed', inverse ? 'text-muted-dark' : 'text-muted')}>{s.text}</p>
+          <div>
+            <h3 className="text-[1.0625rem] font-semibold">{s.title}</h3>
+            <p className={cx('mt-1 text-[0.9375rem] leading-relaxed sm:mt-2', inverse ? 'text-muted-dark' : 'text-muted')}>{s.text}</p>
+          </div>
         </li>
       ))}
     </ol>

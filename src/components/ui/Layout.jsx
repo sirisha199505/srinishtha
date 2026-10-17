@@ -12,7 +12,7 @@ const TONES = {
 
 export function Section({ tone = 'white', id, className, containerClassName, children, ...rest }) {
   return (
-    <section id={id} className={cx(TONES[tone], 'py-14 sm:py-20', className)} {...rest}>
+    <section id={id} className={cx(TONES[tone], 'py-12 sm:py-20', className)} {...rest}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   )

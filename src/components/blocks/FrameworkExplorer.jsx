@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { brandColor } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 import { track } from '../../lib/track'
+import { ChevronDown } from '../ui/Icons'
 
 function LayerDetail({ layer }) {
   return (
@@ -74,12 +75,21 @@ export function FrameworkExplorer({ layers, disclaimer }) {
         </div>
       </div>
 
+      {/* Phones: compact collapsible list */}
       <ol className="divide-y divide-line-dark border-y border-line-dark lg:hidden">
-        {layers.map((l) => (
-          <li key={l.key} className="py-5">
-            <h3 className="text-lg font-semibold">{l.name}</h3>
-            <p className="mt-1 text-muted-dark">{l.value}</p>
-            <p className="mt-3 text-sm text-white/70">{l.modules.join(' · ')}</p>
+        {layers.map((l, i) => (
+          <li key={l.key}>
+            <details className="group">
+              <summary className="flex cursor-pointer list-none items-center gap-3 py-4 [&::-webkit-details-marker]:hidden">
+                <span aria-hidden="true" className="size-2 shrink-0 rounded-full" style={{ background: brandColor(i) }} />
+                <span className="flex-1 font-semibold text-white">{l.name}</span>
+                <ChevronDown className="size-5 text-muted-dark transition-transform group-open:rotate-180" />
+              </summary>
+              <div className="pb-5 pl-5">
+                <p className="text-muted-dark">{l.value}</p>
+                <p className="mt-2 text-sm text-white/70">{l.modules.join(' · ')}</p>
+              </div>
+            </details>
           </li>
         ))}
       </ol>

@@ -27,9 +27,8 @@ export default function Home() {
 
       <Section className="!py-10 sm:!py-12">
         <LogoWall
-          clients={[...site.clients, ...site.products.items.map((p) => ({ name: p.name, logo: p.logo }))]}
+          clients={[...site.clients, ...site.products.items.filter((p) => p.logo).map((p) => ({ name: p.name, logo: p.logo }))]}
           label={home.trustLabel}
-          compact
         />
       </Section>
 

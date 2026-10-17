@@ -44,8 +44,10 @@ export function SiteFooter({ company, navigation, capabilities }) {
             </li>
           </ul>
         </div>
-        <div className="grid gap-10 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
-          <Column title="Capabilities" links={capabilities.map((c) => ({ label: c.title, to: capabilityPath(c.slug) }))} />
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
+          <div className="col-span-2 sm:col-span-1">
+            <Column title="Capabilities" links={capabilities.map((c) => ({ label: c.title, to: capabilityPath(c.slug) }))} />
+          </div>
           <Column
             title="Explore"
             links={navigation.primary.filter((n) => !['Capabilities', 'Company'].includes(n.label)).map((n) => ({ label: n.label, to: n.to }))}

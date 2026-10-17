@@ -37,7 +37,7 @@ export function CaseStudyCard({ study, industry, feature = false }) {
               {study.title}
             </Link>
           </h3>
-          <p className="mt-4 leading-relaxed text-muted">{study.summary}</p>
+          <p className="mt-4 line-clamp-4 leading-relaxed text-muted sm:line-clamp-none">{study.summary}</p>
           {study.metric && (
             <p className="mt-6 border-t border-line pt-5">
               <span className="block text-3xl font-semibold tracking-tight text-ink">{study.metric.value}</span>

@@ -9,7 +9,7 @@ export function ProductRow({ product, storyLabel }) {
   return (
     <article className="grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-10">
       <div className="lg:col-span-5">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {product.logo && <img src={product.logo} alt={`${product.name} logo`} className="h-8 w-auto max-w-[200px] object-contain" />}
           <Tag>{product.status}</Tag>
         </div>
