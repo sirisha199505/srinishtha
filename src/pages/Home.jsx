@@ -24,8 +24,8 @@ export default function Home() {
     <>
       <HomeHero hero={site.hero} cta={site.ctas.global} stats={site.stats} />
 
-      <Section className="!py-10 sm:!py-14">
-        <LogoWall clients={site.clients.slice(0, 10)} label={home.trustLabel} />
+      <Section className="!py-10 sm:!py-12">
+        <LogoWall clients={site.clients} label={home.trustLabel} marquee />
       </Section>
 
       <Section tone="paper">
