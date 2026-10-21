@@ -35,3 +35,30 @@ export function LeaderGrid({ leaders }) {
     </ul>
   )
 }
+
+export function VoiceGrid({ voices }) {
+  return (
+    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {voices.map((v, i) => (
+        <li
+          key={v.author}
+          data-reveal
+          style={{ ...revealDelay(i), borderTopColor: brandColor(i) }}
+          className="flex flex-col rounded-2xl border border-t-4 border-line bg-white p-6 shadow-[0_12px_30px_-20px_rgba(20,20,40,0.35)]"
+        >
+          <span aria-hidden="true" className="font-serif text-5xl leading-none" style={{ color: brandColor(i) }}>“</span>
+          <blockquote className="mt-2 flex-1 text-[0.9375rem] leading-relaxed text-ink">{v.quote}</blockquote>
+          <div className="mt-6 flex items-center gap-3 border-t border-line pt-4">
+            <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white" style={{ background: brandColor(i) }}>
+              {initials(v.author)}
+            </span>
+            <div>
+              <p className="font-semibold text-ink">{v.author}</p>
+              <p className="text-xs text-muted">{v.role}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}

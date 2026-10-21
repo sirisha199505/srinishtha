@@ -2,7 +2,7 @@ import { useSite } from '../content/SiteProvider'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { Gallery } from '../components/blocks/Gallery'
 import { PageHeader } from '../components/blocks/PageHeader'
-import { Quote } from '../components/blocks/Quote'
+import { VoiceGrid } from '../components/blocks/People'
 import { ClosingCta } from '../components/layout/ClosingCta'
 import { Section, SectionHeading } from '../components/ui/Layout'
 
@@ -22,14 +22,8 @@ export default function Life() {
       </Section>
 
       <Section tone="paper">
-        <SectionHeading title={labels.voices} />
-        <ul className="grid gap-8 lg:grid-cols-3">
-          {careers.voices.map((v) => (
-            <li key={v.author} className="border-t border-line pt-6">
-              <Quote testimonial={v} size="sm" />
-            </li>
-          ))}
-        </ul>
+        <SectionHeading eyebrow={labels.voicesEyebrow} title={labels.voices} lede={labels.voicesLede} />
+        <VoiceGrid voices={careers.voices} />
       </Section>
 
       <ClosingCta ctaKey="careers" question={careers.title} lede={careers.ctaLede} />
