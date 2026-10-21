@@ -49,7 +49,7 @@ function CaseStudyPage({ study }) {
         crumbs={[{ label: labels.all, to: '/work' }, { label: study.client }]}
       />
 
-      <Container className="pt-10 sm:pt-12">
+      <Container className="pt-8 sm:pt-10">
         {study.screenshot ? (
           <ScreenFrame src={study.screenshot} alt={`${study.client} platform`} url={study.url} device={study.device} />
         ) : (
@@ -57,7 +57,7 @@ function CaseStudyPage({ study }) {
         )}
       </Container>
 
-      <Section className="!pt-10 sm:!pt-12">
+      <Section className="!pt-8 sm:!pt-10">
         <div className="grid gap-10 lg:grid-cols-12">
           <aside className="lg:col-span-3">
             <dl>

@@ -27,7 +27,7 @@ export function Breadcrumbs({ items }) {
 // Standard header for every inner page.
 export function PageHeader({ eyebrow, heading, lede, crumbs, children }) {
   return (
-    <header className="border-b border-line bg-paper bg-[radial-gradient(ellipse_at_top_right,rgba(255,139,38,0.10),transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(138,63,209,0.10),transparent_50%)] pt-28 pb-12 sm:pt-32 sm:pb-14">
+    <header className="border-b border-line bg-paper bg-[radial-gradient(ellipse_at_top_right,rgba(255,139,38,0.10),transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(138,63,209,0.10),transparent_50%)] pt-24 pb-8 sm:pt-28 sm:pb-10">
       <Container>
         {crumbs && <Breadcrumbs items={crumbs} />}
         <div className="grid gap-5 lg:grid-cols-12">

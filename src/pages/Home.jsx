@@ -25,7 +25,7 @@ export default function Home() {
     <>
       <HomeHero hero={site.hero} cta={site.ctas.global} stats={site.stats} />
 
-      <Section className="!py-10 sm:!py-12">
+      <Section className="!py-8 sm:!py-10">
         <LogoWall
           clients={[...site.clients, ...site.products.items.filter((p) => p.logo).map((p) => ({ name: p.name, logo: p.logo }))]}
           label={home.trustLabel}
@@ -45,7 +45,7 @@ export default function Home() {
       <Section>
         <SectionHeading {...home.work} action={<MoreLink link={home.work.link} />} />
         <CaseStudyCard study={lead} industry={industryOf(lead.industry)} feature />
-        <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2">
+        <div className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2">
           {supporting.slice(0, 2).map((s) => (
             <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} />
           ))}

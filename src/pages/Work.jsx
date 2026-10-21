@@ -20,7 +20,7 @@ export default function Work() {
       <PageHeader {...meta} />
       <Section>
         <h2 className="sr-only">{labels.flagship}</h2>
-        <div className="space-y-16">
+        <div className="space-y-10">
           {flagship.map((s) => (
             <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} feature />
           ))}

@@ -33,7 +33,7 @@ function LogoMark({ client }) {
 // a flowing centred row on desktop.
 export function LogoWall({ clients, label }) {
   return (
-    <div className="rounded-2xl border border-line bg-paper bg-[radial-gradient(ellipse_at_top_left,rgba(255,139,38,0.08),transparent_45%),radial-gradient(ellipse_at_bottom_right,rgba(138,63,209,0.10),transparent_50%)] px-4 py-8 sm:rounded-3xl sm:px-10 sm:py-12">
+    <div className="rounded-2xl border border-line bg-paper bg-[radial-gradient(ellipse_at_top_left,rgba(255,139,38,0.08),transparent_45%),radial-gradient(ellipse_at_bottom_right,rgba(138,63,209,0.10),transparent_50%)] px-4 py-6 sm:rounded-3xl sm:px-10 sm:py-10">
       {label && <p className="mb-8 text-center text-sm font-medium text-muted">{label}</p>}
       <ul
         data-reveal

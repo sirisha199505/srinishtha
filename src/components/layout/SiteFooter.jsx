@@ -25,7 +25,7 @@ export function SiteFooter({ company, navigation, capabilities }) {
   return (
     <footer className="bg-ink text-muted-dark">
       <div aria-hidden="true" className="h-[3px] bg-brand-gradient" />
-      <Container className="grid gap-10 py-12 lg:grid-cols-12">
+      <Container className="grid gap-8 py-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="h-8 w-auto" />
           <p className="mt-5 max-w-sm text-sm leading-relaxed">{company.promise}</p>

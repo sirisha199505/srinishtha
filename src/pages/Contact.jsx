@@ -27,7 +27,7 @@ export default function Contact() {
   const l = labels.contact
 
   return (
-    <section className="bg-paper pt-28 pb-14 sm:pt-32 sm:pb-20">
+    <section className="bg-paper pt-24 pb-10 sm:pt-28 sm:pb-14">
       <Container className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Eyebrow>{meta.eyebrow}</Eyebrow>

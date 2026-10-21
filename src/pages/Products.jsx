@@ -13,7 +13,7 @@ export default function Products() {
     <>
       <PageHeader eyebrow={products.eyebrow} heading={products.title} lede={products.lede} />
       <Section>
-        <div className="space-y-14">
+        <div className="space-y-10">
           {products.items.map((p) => (
             <ProductRow key={p.name} product={p} storyLabel={site.labels.products.caseStudy} />
           ))}

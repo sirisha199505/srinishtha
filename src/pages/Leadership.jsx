@@ -1,7 +1,7 @@
 import { useSite } from '../content/SiteProvider'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { FeatureGrid } from '../components/blocks/FeatureGrid'
-import { LeaderGrid, TeamStrip } from '../components/blocks/People'
+import { LeaderGrid } from '../components/blocks/People'
 import { PageHeader } from '../components/blocks/PageHeader'
 import { ClosingCta } from '../components/layout/ClosingCta'
 import { Section, SectionHeading } from '../components/ui/Layout'
@@ -26,8 +26,8 @@ export default function Leadership() {
       </Section>
 
       <Section tone="paper">
-        <SectionHeading eyebrow={labels.team} title={labels.teamTitle} highlight />
-        <TeamStrip members={site.team} />
+        <SectionHeading eyebrow={labels.team} title={labels.teamTitle} lede={labels.teamLede} highlight />
+        <LeaderGrid leaders={site.team} />
       </Section>
 
       <ClosingCta ctaKey="careers" question={site.careers.title} lede={site.careers.ctaLede} />

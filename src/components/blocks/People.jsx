@@ -35,17 +35,3 @@ export function LeaderGrid({ leaders }) {
     </ul>
   )
 }
-
-export function TeamStrip({ members }) {
-  return (
-    <ul className="grid grid-cols-3 gap-x-5 gap-y-6 sm:grid-cols-6">
-      {members.map((m) => (
-        <li key={m.name} className="text-center">
-          <img src={m.photo} alt="" loading="lazy" className="mx-auto aspect-square w-full max-w-28 rounded-full object-cover ring-2 ring-white shadow-[0_8px_20px_-10px_rgba(138,63,209,0.5)]" />
-          <p className="mt-3 text-sm font-medium text-ink">{m.name}</p>
-          {m.role && <p className="text-xs text-muted">{m.role}</p>}
-        </li>
-      ))}
-    </ul>
-  )
-}

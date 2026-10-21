@@ -12,7 +12,7 @@ const TONES = {
 
 export function Section({ tone = 'white', id, className, containerClassName, children, ...rest }) {
   return (
-    <section id={id} className={cx(TONES[tone], 'py-12 sm:py-20', className)} {...rest}>
+    <section id={id} className={cx(TONES[tone], 'py-10 sm:py-14', className)} {...rest}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   )
@@ -37,7 +37,7 @@ export function Eyebrow({ children, inverse = false, className }) {
 // Editorial section heading: title left, lede right on wide screens.
 export function SectionHeading({ eyebrow, title, lede, as: Tag = 'h2', inverse = false, split = true, highlight = false, action, className }) {
   return (
-    <div data-reveal className={cx('mb-8 grid gap-4 sm:mb-10 lg:grid-cols-12 lg:gap-10', className)}>
+    <div data-reveal className={cx('mb-6 grid gap-4 sm:mb-8 lg:grid-cols-12 lg:gap-10', className)}>
       <div className={split ? 'lg:col-span-7' : 'lg:col-span-9'}>
         <Eyebrow inverse={inverse}>{eyebrow}</Eyebrow>
         <Tag className={cx('mt-3 text-headline font-semibold', inverse && 'text-white')}>
