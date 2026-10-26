@@ -28,7 +28,7 @@ function LeadProject({ study, industry, testimonial }) {
           </p>
         )}
         {testimonial && (
-          <figure className="mt-6 border-l-2 border-gold pl-5">
+          <figure className="mt-6 border-l-2 border-brand-pink pl-5">
             <blockquote className="text-[0.9375rem] leading-relaxed text-body">“{testimonial.quote}”</blockquote>
             <figcaption className="mt-3 text-sm font-semibold text-ink">
               {testimonial.author}

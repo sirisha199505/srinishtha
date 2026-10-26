@@ -6,34 +6,34 @@
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* Corporate palette: charcoal + warm white foundation, champagne gold for highlights,
-     burnt amber for buttons and links. `navy` is the historical name of the dark surface. */
-  --color-navy: #17212b;
-  --color-navy-2: #111921;
-  --color-navy-3: #1f2c39;
-  --color-ink: #17212b;
-  --color-body: #35465a;
-  --color-muted: #5e6e80;
-  --color-muted-dark: #aeb8c3;
-  --color-canvas: #fffcf7;
-  --color-paper: #f1f3f5;
+  /* Palette taken from the Srinishtha logo: orange #FF8B26 · pink #E54B7A · purple #8A3FD1 ·
+     cyan #39C4D6, on deep indigo and white. `navy` is the historical name of the dark surface;
+     `gold` is the accent used on dark surfaces (logo orange). */
+  --color-brand-orange: #ff8b26;
+  --color-brand-pink: #e54b7a;
+  --color-brand-purple: #8a3fd1;
+  --color-brand-cyan: #39c4d6;
+  --color-navy: #14112b;
+  --color-navy-2: #0e0b1f;
+  --color-navy-3: #1d1940;
+  --color-ink: #14112b;
+  --color-body: #3a4050;
+  --color-muted: #646a7c;
+  --color-muted-dark: #aaa6c4;
+  --color-canvas: #ffffff;
+  --color-paper: #f8f5ff;
   --color-white: #ffffff;
-  --color-line: #dfe3e7;
-  --color-line-dark: #2c3a48;
-  --color-accent: #b66a20;
-  /* Amber text on light surfaces (4.5:1+ on warm white); also the hover state of amber buttons */
-  --color-accent-strong: #9a5717;
-  --color-accent-soft: #f8ecdc;
-  /* Champagne gold: on charcoal only (too light for text on white) */
-  --color-accent-bright: #e8b46a;
-  --color-gold: #e8b46a;
+  --color-line: #ece8f5;
+  --color-line-dark: #2d2950;
+  --color-accent: #8a3fd1;
+  /* Purple text on light surfaces (7:1); also the hover state of filled accents */
+  --color-accent-strong: #6f2fb0;
+  --color-accent-soft: #f1e8fb;
+  --color-accent-bright: #ff8b26;
+  --color-gold: #ff8b26;
   --color-danger: #b42318;
   --color-success: #1f7a4d;
 
-  /* Kept for admin status chips only; the public site does not use them */
-  --color-brand-orange: #c2701d;
-  --color-brand-purple: #5b4fb3;
-  --color-brand-cyan: #1e8ca0;
 
   --text-display: clamp(2.5rem, 1.55rem + 3.6vw, 4.75rem);
   --text-display--line-height: 1.03;
@@ -73,15 +73,38 @@
     outline-offset: 3px;
   }
   ::selection {
-    background: var(--color-gold);
+    background: var(--color-accent-soft);
     color: var(--color-ink);
   }
 }
 
 @layer utilities {
-  /* Admin chrome accent bar (public site uses no gradients) */
+  /* The logo's colour sweep. Buttons use its pink→purple end so white text stays AA. */
   .bg-brand-gradient {
-    background: var(--color-accent);
+    background-image: linear-gradient(100deg, #c9417a, #8a3fd1 60%, #7a35bd);
+    background-size: 160% 100%;
+    background-position: 0% 50%;
+    transition: background-position 400ms var(--ease-out-soft);
+  }
+  .bg-brand-gradient:hover {
+    background-position: 100% 50%;
+  }
+  .bg-brand-line {
+    background-image: linear-gradient(90deg, #ff8b26, #e54b7a, #8a3fd1, #39c4d6);
+  }
+  /* Highlighted words, like the wordmark: on light surfaces (darkened ends for contrast)… */
+  .text-brand-gradient {
+    background-image: linear-gradient(90deg, #d9631a, #d23f6e 45%, #7a35bd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* …and on dark surfaces (lightened purple end) */
+  .text-brand-gradient-inverse {
+    background-image: linear-gradient(90deg, #ff8b26, #e54b7a 50%, #b07cf0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .reveal {
     animation: reveal 800ms var(--ease-out-soft) both;
@@ -167,12 +190,12 @@
 /* Globe: the canvas fades in over a warm ambient glow (also the fallback without canvas) */
 .hero-ambient {
   background:
-    radial-gradient(60% 70% at 74% 52%, rgba(182, 106, 32, 0.16), transparent 70%),
-    radial-gradient(40% 40% at 58% 18%, rgba(232, 180, 106, 0.10), transparent 70%);
+    radial-gradient(60% 70% at 74% 52%, rgba(138, 63, 209, 0.22), transparent 70%),
+    radial-gradient(40% 40% at 58% 18%, rgba(229, 75, 122, 0.12), transparent 70%);
 }
 @media (max-width: 1023px) {
   .hero-ambient {
-    background: radial-gradient(90% 45% at 50% 100%, rgba(182, 106, 32, 0.22), transparent 75%);
+    background: radial-gradient(90% 45% at 50% 100%, rgba(138, 63, 209, 0.28), transparent 75%);
   }
 }
 .globe-canvas {

@@ -18,7 +18,7 @@ function Sheet({ title, items, onClose }) {
   return (
     <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label={title}>
       <button type="button" aria-label="Close" tabIndex={-1} onClick={onClose} className="absolute inset-0 bg-ink/50" style={{ animation: 'fade-in 200ms ease-out both' }} />
-      <div ref={ref} className="sheet-up absolute inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] max-h-[70svh] overflow-y-auto rounded-t-2xl border-t-2 border-gold bg-canvas px-5 pt-4 pb-4 shadow-[0_-20px_40px_-20px_rgba(23,33,43,0.45)]">
+      <div ref={ref} className="sheet-up absolute inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] max-h-[70svh] overflow-y-auto rounded-t-2xl border-t-2 border-gold bg-canvas px-5 pt-4 pb-4 shadow-[0_-20px_40px_-20px_rgba(20,17,43,0.45)]">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-xs font-semibold tracking-[0.16em] text-accent-strong uppercase">{title}</p>
           <button type="button" onClick={onClose} aria-label="Close" className="-mr-2 flex size-10 items-center justify-center rounded-full text-muted hover:bg-paper">
@@ -67,7 +67,7 @@ export function MobileTabBar({ nav, menus }) {
   return (
     <>
       {current && <Sheet title={current.label} items={current.sheet} onClose={() => setOpen(null)} />}
-      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-canvas pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-24px_rgba(23,33,43,0.5)] lg:hidden">
+      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-canvas pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_30px_-24px_rgba(20,17,43,0.5)] lg:hidden">
         <ul className="mx-auto grid max-w-xl" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
           {tabs.map((tab) => {
             const Icon = ICONS[tab.to] || Grid

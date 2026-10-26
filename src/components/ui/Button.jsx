@@ -4,7 +4,7 @@ import { SmartLink } from './SmartLink'
 import { ArrowRight } from './Icons'
 
 const VARIANTS = {
-  primary: 'bg-accent text-white hover:bg-accent-strong',
+  primary: 'bg-brand-gradient text-white',
   inverse: 'bg-canvas text-navy hover:bg-accent-soft',
   outline: 'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-white',
   'outline-inverse': 'border border-white/40 text-white hover:border-gold hover:text-gold',

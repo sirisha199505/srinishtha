@@ -3,13 +3,13 @@ import { Button } from '../ui/Button'
 import { Container, Eyebrow } from '../ui/Layout'
 import { ConnectedGlobe } from './ConnectedGlobe'
 
-// Headline split into masked lines that rise in sequence; `highlight` is set in champagne gold.
+// Headline split into masked lines that rise in sequence; `highlight` gets the logo's colour sweep.
 function Headline({ lines, highlight }) {
   return (
     <h1 className="hero-title font-bold text-white">
       {lines.map((line, i) => (
         <span key={line} className="hero-line">
-          <span style={{ '--d': `${200 + i * 140}ms` }} className={line === highlight ? 'text-gold' : undefined}>
+          <span style={{ '--d': `${200 + i * 140}ms` }} className={line === highlight ? 'text-brand-gradient-inverse' : undefined}>
             {line}
           </span>
         </span>
@@ -38,7 +38,7 @@ export function HomeHero({ hero, stats }) {
       <div aria-hidden="true" className="hero-ambient absolute inset-0 -z-20" />
       <ConnectedGlobe labels={hero.labels} />
       {/* Keeps the copy legible where the globe's glow reaches behind it (desktop) */}
-      <div aria-hidden="true" className="absolute inset-y-0 left-0 -z-10 hidden w-[64%] bg-[linear-gradient(90deg,var(--color-navy)_40%,rgba(23,33,43,0.65)_52%,transparent)] lg:block" />
+      <div aria-hidden="true" className="absolute inset-y-0 left-0 -z-10 hidden w-[64%] bg-[linear-gradient(90deg,var(--color-navy)_40%,rgba(20,17,43,0.65)_52%,transparent)] lg:block" />
 
       <Container className="flex min-h-[min(100svh,880px)] flex-col justify-center pt-[68px] pb-[52vw] sm:pb-[min(47vw,380px)] lg:min-h-[max(560px,min(100svh,920px))] lg:pt-[76px] lg:pb-0">
         <div className="py-12 sm:py-16 lg:max-w-[40rem] lg:py-20 short:py-8">

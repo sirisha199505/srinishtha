@@ -11,7 +11,7 @@ export function ServiceIndex({ services, compact = false }) {
       {services.map((s, i) => (
         <li key={s.title} data-reveal style={revealDelay(i % 4, 80)} className="border-r border-b border-line">
           <Link to={s.to} className={cx('group relative flex h-full flex-col transition-colors duration-300 hover:bg-white', compact ? 'p-5 sm:p-7' : 'p-6 sm:p-8')}>
-            <span aria-hidden="true" className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
+            <span aria-hidden="true" className="absolute inset-x-0 top-0 bg-brand-line h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
             <div className="flex items-start justify-between">
               <span className="flex size-12 items-center justify-center rounded-full bg-accent-soft text-accent-strong transition-colors duration-300 group-hover:bg-accent group-hover:text-white">
                 <NamedIcon name={s.icon} className="size-6" />

@@ -35,14 +35,14 @@ export function Eyebrow({ children, inverse = false, className }) {
   )
 }
 
-// Sets one phrase of a heading in the accent colour: amber on light surfaces, gold on charcoal.
+// Sets one phrase of a heading in the logo's colour sweep (light- or dark-surface variant).
 export function Highlighted({ text, highlight, inverse = false }) {
   if (!highlight || !text.includes(highlight)) return text
   const [before, after] = text.split(highlight)
   return (
     <>
       {before}
-      <span className={inverse ? 'text-gold' : 'text-accent-strong'}>{highlight}</span>
+      <span className={inverse ? 'text-brand-gradient-inverse' : 'text-brand-gradient'}>{highlight}</span>
       {after}
     </>
   )

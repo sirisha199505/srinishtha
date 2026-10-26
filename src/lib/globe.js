@@ -6,8 +6,13 @@
 import { LAND } from './landMask'
 
 const DEG = Math.PI / 180
-const GOLD = [232, 180, 106]
-const WHITE = [255, 246, 232]
+// Logo colours: orange, pink, purple (lightened for the dark globe), cyan.
+const ORANGE = [255, 139, 38]
+const PINK = [229, 75, 122]
+const PURPLE = [176, 124, 240]
+const CYAN = [57, 196, 214]
+const WHITE = [255, 255, 255]
+const LINK_COLORS = [ORANGE, PINK, PURPLE, CYAN]
 
 // [name, lat, lon, brightness]. The first entry is the hub.
 const CITIES = [
@@ -143,13 +148,14 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
     start: i < INTRO_LINKS ? 1.2 + i * 0.12 : 3 + (i - INTRO_LINKS) * 0.55,
     // Varied cycle lengths keep the waves from falling into step.
     cycle: 9 + ((i * 5) % 7) * 0.85,
-    color: i % 3 === 2 ? WHITE : GOLD,
+    color: LINK_COLORS[i % LINK_COLORS.length],
     period: 3.2 + ((i * 7) % 5) * 0.45,
     offset: (i * 0.37) % 1,
   }))
   const random = rng(7)
   const stars = Array.from({ length: lite ? 40 : 90 }, () => [random(), random(), random() * 0.6 + 0.15, random() * 6.28])
-  const goldGlow = glowSprite(GOLD.join(','))
+  const glows = new Map(LINK_COLORS.map((c) => [c, glowSprite(c.join(','))]))
+  const cityGlow = glows.get(ORANGE)
   const whiteGlow = glowSprite(WHITE.join(','))
 
   let w = 0, h = 0, dpr = 1, geo = { cx: 0, cy: 0, r: 0 }
@@ -181,26 +187,26 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
     g.clearRect(0, 0, w, h)
     // Atmosphere: a warm halo, brightest toward the upper-left limb ("sunrise")
     const halo = g.createRadialGradient(cx, cy, R * 0.92, cx, cy, R * 1.32)
-    halo.addColorStop(0, 'rgba(232,180,106,0.30)')
-    halo.addColorStop(0.25, 'rgba(182,106,32,0.12)')
-    halo.addColorStop(1, 'rgba(182,106,32,0)')
+    halo.addColorStop(0, 'rgba(176,124,240,0.34)')
+    halo.addColorStop(0.25, 'rgba(138,63,209,0.14)')
+    halo.addColorStop(1, 'rgba(138,63,209,0)')
     g.fillStyle = halo
     g.beginPath()
     g.arc(cx, cy, R * 1.32, 0, Math.PI * 2)
     g.fill()
     const sunX = cx - R * 0.62, sunY = cy - R * 0.72
     const sun = g.createRadialGradient(sunX, sunY, 0, sunX, sunY, R * 1.1)
-    sun.addColorStop(0, 'rgba(232,180,106,0.32)')
-    sun.addColorStop(0.4, 'rgba(182,106,32,0.10)')
-    sun.addColorStop(1, 'rgba(182,106,32,0)')
+    sun.addColorStop(0, 'rgba(255,139,38,0.26)')
+    sun.addColorStop(0.4, 'rgba(229,75,122,0.12)')
+    sun.addColorStop(1, 'rgba(229,75,122,0)')
     g.fillStyle = sun
     g.fillRect(sunX - R * 1.1, sunY - R * 1.1, R * 2.2, R * 2.2)
 
     // Ocean sphere, lit from the upper left
     const body = g.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R)
-    body.addColorStop(0, '#26384a')
-    body.addColorStop(0.6, '#18232f')
-    body.addColorStop(1, '#0f161d')
+    body.addColorStop(0, '#2b2558')
+    body.addColorStop(0.6, '#191536')
+    body.addColorStop(1, '#0d0b1f')
     g.fillStyle = body
     g.beginPath()
     g.arc(cx, cy, R, 0, Math.PI * 2)
@@ -216,12 +222,12 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
       bands[Math.min(3, (z * 4) | 0)].rect(x - size / 2, y - size / 2, size, size)
     }
     bands.forEach((p, i) => {
-      g.fillStyle = `rgba(214,190,150,${(0.12 + i * 0.13).toFixed(2)})`
+      g.fillStyle = `rgba(206,196,245,${(0.12 + i * 0.13).toFixed(2)})`
       g.fill(p)
     })
 
     // Rim light
-    g.strokeStyle = 'rgba(232,180,106,0.35)'
+    g.strokeStyle = 'rgba(229,75,122,0.4)'
     g.lineWidth = 1
     g.beginPath()
     g.arc(cx, cy, R, Math.PI * 0.9, Math.PI * 1.75)
@@ -229,6 +235,8 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
   }
 
   function draw(t) {
+    // Nothing to draw while the canvas has no size (hidden, or being removed on navigation)
+    if (!canvas.width || !canvas.height) return
     const { cx, cy } = geo
     const intro = easeOut(t / 1.6)
     const R = geo.r * (0.94 + 0.06 * intro)
@@ -252,7 +260,7 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
 
     // Faint stars, twinkling slowly
     for (const [sx, sy, a, ph] of stars) {
-      ctx.fillStyle = `rgba(255,240,220,${(a * (0.7 + 0.3 * Math.sin(t * 0.6 + ph)) * intro * 0.5).toFixed(3)})`
+      ctx.fillStyle = `rgba(240,236,255,${(a * (0.7 + 0.3 * Math.sin(t * 0.6 + ph)) * intro * 0.5).toFixed(3)})`
       ctx.fillRect(sx * w, sy * h, 1.2, 1.2)
     }
 
@@ -275,7 +283,7 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
       const flicker = 0.85 + 0.15 * Math.sin(t * 1.3 + i * 1.7)
       const s = R * (0.03 + 0.05 * c.w) * flicker
       ctx.globalAlpha = intro * Math.min(1, z * 2.2) * (0.45 + 0.55 * c.w)
-      ctx.drawImage(goldGlow, x - s, y - s, s * 2, s * 2)
+      ctx.drawImage(cityGlow, x - s, y - s, s * 2, s * 2)
     })
 
     // Links: draw in, then carry light trails
@@ -310,7 +318,7 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
       if (p < 1 && visibleAt(proj[last])) {
         const s = R * 0.05
         ctx.globalAlpha = fade
-        ctx.drawImage(link.color === GOLD ? goldGlow : whiteGlow, proj[last][0] - s, proj[last][1] - s, s * 2, s * 2)
+        ctx.drawImage(glows.get(link.color), proj[last][0] - s, proj[last][1] - s, s * 2, s * 2)
       }
       if (p < 1 || reducedMotion) return
 
@@ -332,7 +340,7 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
       if (visibleAt(hq)) {
         const s = R * 0.035
         ctx.globalAlpha = fade
-        ctx.drawImage(link.color === GOLD ? goldGlow : whiteGlow, hq[0] - s, hq[1] - s, s * 2, s * 2)
+        ctx.drawImage(glows.get(link.color), hq[0] - s, hq[1] - s, s * 2, s * 2)
       }
       // Arrival pulse at the destination
       if (u > 0.86) {
@@ -353,12 +361,12 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
     if (hz > 0) {
       const s = R * 0.09
       ctx.globalAlpha = intro
-      ctx.drawImage(goldGlow, hx - s, hy - s, s * 2, s * 2)
+      ctx.drawImage(cityGlow, hx - s, hy - s, s * 2, s * 2)
       ctx.drawImage(whiteGlow, hx - s * 0.35, hy - s * 0.35, s * 0.7, s * 0.7)
       if (!reducedMotion) {
         const k = (t % 3.2) / 3.2
         ctx.globalAlpha = intro * (1 - k) * 0.7
-        ctx.strokeStyle = `rgb(${GOLD})`
+        ctx.strokeStyle = `rgb(${ORANGE})`
         ctx.lineWidth = 1.2
         ctx.beginPath()
         ctx.arc(hx, hy, 3 + k * R * 0.12, 0, Math.PI * 2)

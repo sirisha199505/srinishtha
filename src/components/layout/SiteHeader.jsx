@@ -32,7 +32,7 @@ function MenuList({ items, onNavigate, compact = false }) {
 
 function ServicesPanel({ menus, onNavigate }) {
   return (
-    <div className="grid w-[min(94vw,980px)] grid-cols-12 overflow-hidden rounded-[4px] border border-line bg-canvas shadow-[0_30px_60px_-30px_rgba(23,33,43,0.4)]">
+    <div className="grid w-[min(94vw,980px)] grid-cols-12 overflow-hidden rounded-[4px] border border-line bg-canvas shadow-[0_30px_60px_-30px_rgba(20,17,43,0.4)]">
       <div className="col-span-4 bg-navy bg-blueprint p-8 text-white">
         <p className="text-xs font-semibold tracking-[0.16em] text-accent-bright uppercase">Services</p>
         <p className="mt-4 text-xl leading-snug font-semibold tracking-tight">Engineering for every stage of your technology journey.</p>
@@ -59,7 +59,7 @@ function DropdownPanel({ menu, menus, onNavigate }) {
       {menu === 'services' ? (
         <ServicesPanel menus={menus} onNavigate={onNavigate} />
       ) : (
-        <div className="w-[380px] rounded-[4px] border border-line bg-canvas p-3 shadow-[0_30px_60px_-30px_rgba(23,33,43,0.4)]">
+        <div className="w-[380px] rounded-[4px] border border-line bg-canvas p-3 shadow-[0_30px_60px_-30px_rgba(20,17,43,0.4)]">
           <MenuList items={menus[menu]} onNavigate={onNavigate} />
         </div>
       )}
@@ -100,13 +100,13 @@ function DesktopNav({ nav, menus, pathname }) {
             'group relative flex h-[76px] items-center gap-1 px-3 text-[0.9375rem] font-medium transition-colors xl:px-4',
             active ? 'text-accent-strong' : 'text-body hover:text-ink',
           )
-          // Amber bar marks the current section; a gold one follows the pointer.
+          // A bar in the logo colours marks the current section and follows the pointer.
           const bar = (
             <span
               aria-hidden="true"
               className={cx(
                 'absolute inset-x-3 bottom-4 h-0.5 transition-transform duration-300 xl:inset-x-4',
-                active ? 'scale-x-100 bg-accent' : cx('bg-gold group-hover:scale-x-100', open === item.menu ? 'scale-x-100' : 'scale-x-0'),
+                cx('bg-brand-line', active || open === item.menu ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'),
               )}
             />
           )
@@ -151,7 +151,7 @@ export function SiteHeader({ company, nav, menus, cta }) {
     <header
       className={cx(
         'fixed inset-x-0 top-0 z-50 border-b bg-canvas transition-[border-color,box-shadow] duration-300',
-        scrolled ? 'border-line shadow-[0_10px_30px_-22px_rgba(23,33,43,0.45)]' : 'border-transparent',
+        scrolled ? 'border-line shadow-[0_10px_30px_-22px_rgba(20,17,43,0.45)]' : 'border-transparent',
       )}
     >
       <Container className="flex h-[68px] items-center justify-between gap-6 lg:h-[76px]">
