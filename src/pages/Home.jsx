@@ -1,5 +1,5 @@
 import { useSite } from '../content/SiteProvider'
-import { bySlug, industryName, testimonialFor } from '../content/selectors'
+import { bySlug, industryName, splitByStatus, testimonialFor } from '../content/selectors'
 import { APPROACH, FINAL_CTA, HERO, INDUSTRIES, POSITIONING, SERVICES_INTRO, TRUST, WHY, WORK } from '../content/home'
 import { SERVICES } from '../content/services'
 import { usePageMeta } from '../hooks/usePageMeta'
@@ -22,9 +22,9 @@ export default function Home() {
   const site = useSite()
   usePageMeta('home')
   const lead = bySlug(site.caseStudies, WORK.lead)
-  // Featured clients first, then every other delivered platform with a screenshot.
+  // Featured clients first, then every other live platform with a screenshot, then those in development.
   const featured = WORK.projects.map((name) => site.projects.find((p) => p.client === name)).filter((p) => p?.screenshot)
-  const projects = [...featured, ...site.projects.filter((p) => p.screenshot && !featured.includes(p))]
+  const projects = [...featured, ...splitByStatus(site.projects.filter((p) => p.screenshot && !featured.includes(p))).flat()]
 
   return (
     <>

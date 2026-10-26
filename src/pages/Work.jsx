@@ -1,5 +1,5 @@
 import { useSite } from '../content/SiteProvider'
-import { industryName } from '../content/selectors'
+import { industryName, splitByStatus } from '../content/selectors'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { CaseStudyCard, CaseStudyGrid } from '../components/blocks/CaseStudyCard'
 import { PageHeader } from '../components/blocks/PageHeader'
@@ -14,6 +14,7 @@ export default function Work() {
   const industryOf = (slug) => industryName(site, slug)
   const flagship = site.caseStudies.filter((s) => s.flagship)
   const others = site.caseStudies.filter((s) => !s.flagship)
+  const [live, building] = splitByStatus(site.projects)
 
   return (
     <>
@@ -32,8 +33,14 @@ export default function Work() {
       </Section>
       <Section id="archive">
         <SectionHeading eyebrow="Archive" title={labels.archive} lede={labels.archiveLede} />
-        <ProjectArchive projects={site.projects} />
+        <ProjectArchive projects={live} />
       </Section>
+      {building.length > 0 && (
+        <Section tone="paper">
+          <SectionHeading eyebrow="In development" title="Platforms we are building right now." />
+          <ProjectArchive projects={building} />
+        </Section>
+      )}
       <ClosingCta ctaKey="caseStudy" />
     </>
   )

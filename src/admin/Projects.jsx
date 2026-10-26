@@ -6,6 +6,7 @@ export default function Projects() {
   const schema = [
     { name: 'client', label: 'Client / project name', required: true },
     { name: 'category', label: 'Category', required: true, placeholder: 'e.g. D2C Commerce' },
+    { name: 'status', label: 'Status', placeholder: 'e.g. In development', hint: 'Optional: shown as a badge. Leave empty for live projects.' },
     { name: 'url', label: 'Live website link', type: 'url', placeholder: 'https://…' },
     { name: 'device', label: 'Screenshot type', type: 'select', options: [{ value: 'mobile', label: 'Mobile app (phone frame)' }], hint: 'Leave empty for a desktop website.' },
     { name: 'screenshot', label: 'Screenshot', type: 'image', required: true },

@@ -11,3 +11,6 @@ export const flagships = (site) => site.caseStudies.filter((c) => c.flagship)
 export const testimonialFor = (site, key) => site.testimonials.find((t) => t.key === key)
 export const industryName = (site, slug) => bySlug(site.industries, slug)?.name
 export const ctaFor = (site, key) => site.ctas[key] || site.ctas.global
+
+// Projects split for display: live (no status) first, then those still being built (any status, e.g. 'In development').
+export const splitByStatus = (projects) => [projects.filter((p) => !p.status), projects.filter((p) => p.status)]

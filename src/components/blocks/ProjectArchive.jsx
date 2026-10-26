@@ -7,6 +7,7 @@ import { track } from '../../lib/track'
 import { ArrowRight, ArrowUpRight } from '../ui/Icons'
 import { ConnectedFrame } from '../ui/ConnectedFrame'
 import { ScreenFrame } from '../ui/ScreenFrame'
+import { Tag } from '../ui/Layout'
 
 // Where a project leads: its case study, its live site, or both.
 function ProjectLinks({ project, inverse }) {
@@ -54,7 +55,7 @@ function ArchiveCard({ project, index }) {
             className="flip-back flex flex-col justify-center rounded-[4px] bg-navy bg-blueprint p-5 sm:p-6"
             onClick={(e) => e.target === e.currentTarget && setFlipped(false)}
           >
-            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-accent-bright uppercase">{project.category}</p>
+            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-accent-bright uppercase">{[project.category, project.status].filter(Boolean).join(' · ')}</p>
             <p className="mt-1.5 text-lg font-semibold tracking-tight text-white">{project.client}</p>
             <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/75">{project.description}</p>
             <div className="mt-4">
@@ -64,7 +65,10 @@ function ArchiveCard({ project, index }) {
         </div>
       </ConnectedFrame>
       <div className="cine-copy">
-        <p className="mt-5 text-xs font-semibold tracking-[0.12em] text-muted uppercase">{project.category}</p>
+        <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">{project.category}</p>
+          {project.status && <Tag>{project.status}</Tag>}
+        </div>
         <h3 className="mt-2 text-lg font-semibold tracking-tight">{project.client}</h3>
       </div>
     </li>

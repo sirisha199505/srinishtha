@@ -65,7 +65,7 @@ function ProjectTile({ project }) {
         <span className="font-semibold text-ink group-hover:text-accent-strong">{project.client}</span>
         <Icon className="size-4 shrink-0 text-accent-strong" />
       </p>
-      <p className="mt-1 text-sm text-muted">{project.category}</p>
+      <p className="mt-1 text-sm text-muted">{[project.category, project.status].filter(Boolean).join(' · ')}</p>
       {!internal && <span className="sr-only">(opens in a new tab)</span>}
     </Tag>
   )
