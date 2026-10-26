@@ -374,9 +374,11 @@
 }
 .cine-shot.is-active {
   opacity: 1;
+}
+.cine-shot.is-active .cine-backdrop {
   animation: cine-camera 9000ms ease-out both;
 }
-.cine-shot-alt.is-active {
+.cine-shot-alt.is-active .cine-backdrop {
   animation-name: cine-camera-alt;
 }
 @keyframes cine-camera {

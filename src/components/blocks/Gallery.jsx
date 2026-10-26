@@ -58,16 +58,15 @@ function CinematicView({ photos, index, onIndex, onClose }) {
       onKeyDown={onKeyDown}
       className="cine-view fixed inset-0 m-0 size-full max-h-none max-w-none overflow-hidden bg-black p-0 text-white backdrop:bg-black"
     >
-      {/* Photos stacked; the active one fades in under a slow camera move */}
+      {/* Photos stacked; the active one fades in. The whole photo is shown uncropped between the
+          letterbox bars, over a blurred copy of itself that fills the screen and carries the camera move. */}
       {photos.map((p, i) => (
-        <img
-          key={p.image}
-          src={p.image}
-          alt={i === index ? p.title : ''}
-          className={cx('cine-shot absolute inset-0 size-full object-cover', i === index && 'is-active', i % 2 && 'cine-shot-alt')}
-        />
+        <div key={p.image} className={cx('cine-shot absolute inset-0', i === index && 'is-active', i % 2 && 'cine-shot-alt')}>
+          <img src={p.image} alt="" aria-hidden="true" className="cine-backdrop absolute inset-0 size-full scale-110 object-cover blur-2xl brightness-50" />
+          <img src={p.image} alt={i === index ? p.title : ''} className="absolute inset-x-0 top-[9vh] h-[82vh] w-full object-contain" />
+        </div>
       ))}
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.65))]" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent" />
 
       {/* Letterbox bars */}
       <div aria-hidden="true" className="cine-bar cine-bar-top absolute inset-x-0 top-0 h-[9vh] bg-black" />
@@ -104,6 +103,11 @@ function CinematicView({ photos, index, onIndex, onClose }) {
   )
 }
 
+// Justified rows: each tile grows in proportion to its photo's width/height ratio, so every
+// photo in a row shares one height and none is cropped. The ratio comes from the content
+// (`ratio`) or is read when the photo loads.
+const tileSize = (r = 4 / 3) => ({ flex: `${r} 1 calc(var(--row-h) * ${r})`, aspectRatio: r })
+
 // Life at Srinishtha photo grid. Each photo arrives face-down inside the brand line
 // (ConnectedFrame), a navy card with its title, then turns over to the picture, cascading
 // through the grid like dealt cards. Hover tilts it slightly in 3D and reveals its title and "View photo ↗"; clicking opens it
@@ -111,6 +115,11 @@ function CinematicView({ photos, index, onIndex, onClose }) {
 // show the title strip instead (index.css: .photo-*).
 export function Gallery({ photos }) {
   const [open, setOpen] = useState(null)
+  const [ratios, setRatios] = useState({})
+  const setRatio = (src, img) => {
+    const r = img.naturalWidth / img.naturalHeight
+    if (r && ratios[src] !== r) setRatios((rs) => ({ ...rs, [src]: r }))
+  }
   return (
     <>
       <div className="mb-6 flex justify-end">
@@ -121,13 +130,13 @@ export function Gallery({ photos }) {
           Play cinematic view
         </button>
       </div>
-      <ul className="grid auto-rows-[220px] grid-cols-1 gap-4 sm:auto-rows-[240px] sm:grid-cols-3">
+      <ul className="flex flex-wrap gap-4 [--row-h:220px] sm:[--row-h:260px]">
         {photos.map((p, i) => (
-          <li key={p.image} data-reveal style={revealDelay(i, 140)} className={cx('photo-item relative', p.span === 'wide' && 'sm:col-span-2')}>
+          <li key={p.image} data-reveal style={{ ...revealDelay(i, 140), ...tileSize(ratios[p.image] ?? p.ratio) }} className="photo-item relative min-w-0">
             <ConnectedFrame className="photo-tilt size-full" onPointerMove={tilt} onPointerLeave={untilt}>
               <div className="photo-flip size-full">
                 <button type="button" onClick={() => setOpen(i)} className="photo-card relative block size-full overflow-hidden rounded-[4px] bg-paper text-left">
-                  <img src={p.image} alt="" loading="lazy" className="photo-image size-full object-cover" />
+                  <img src={p.image} alt="" loading="lazy" onLoad={(e) => setRatio(p.image, e.currentTarget)} className="photo-image size-full object-cover" />
                   <p className="photo-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/80 to-transparent px-4 pt-10 pb-3 text-sm font-medium text-white">{p.title}</p>
                   <span className="photo-overlay absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-navy/90 via-navy/45 to-navy/10 p-5 sm:p-6">
                     <span className="text-xs font-semibold tracking-[0.16em] text-accent-bright uppercase">Life at Srinishtha</span>
@@ -147,6 +156,8 @@ export function Gallery({ photos }) {
             </ConnectedFrame>
           </li>
         ))}
+        {/* Soaks up the spare width in the last row so its photos keep the row height */}
+        <li aria-hidden="true" className="h-0 grow-[3]" />
       </ul>
       {open !== null && <CinematicView photos={photos} index={open} onIndex={setOpen} onClose={() => setOpen(null)} />}
     </>
