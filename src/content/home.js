@@ -30,7 +30,7 @@ export const WORK = {
   link: { label: 'View all work', to: '/work' },
   lead: 'sids-farm',
   testimonial: 'sids-farm',
-  // Delivered platforms shown under the lead case study (clients from the project archive).
+  // Shown first in the projects slider under the lead case study; the rest of the archive follows.
   projects: ['Comfort Cool Systems', 'Crave Better Foods', 'Tenju Tofu', 'Grameena Vidhya Jyothi Bharath', 'Vardhaman Bank', 'Soham Academy'],
 }
 
@@ -46,9 +46,22 @@ export const INDUSTRIES = {
   link: { label: 'All industries', to: '/industries' },
 }
 
+// Positioning statement, shown as a band right under the client logos.
+export const POSITIONING = {
+  eyebrow: 'Who we are',
+  title: 'A premium India\u2011based product engineering studio.', // non-breaking hyphen
+  highlight: 'product engineering studio.',
+  lede: 'Senior-led, flexible custom software delivery for Indian SMEs, institutions and founders.',
+  groups: [
+    { label: 'Built for', items: ['Indian SMEs', 'Institutions', 'Founders'] },
+    { label: 'How we deliver', items: ['Senior-led teams', 'Flexible engagement', 'Custom software'] },
+  ],
+}
+
 export const WHY = {
   eyebrow: 'Why Srinishtha',
-  title: 'A partner that stays accountable.',
+  title: 'Why teams choose us.',
+  highlight: 'choose us.',
   items: [
     { title: 'Business-first', text: 'We start with your process, not the code.' },
     { title: 'Transparent', text: 'Honest estimates, regular demos, no surprises.' },

@@ -85,7 +85,7 @@ export function CaseStudyCard({ study, industry, feature = false, index = 0 }) {
 
 export function CaseStudyGrid({ studies, industryOf, className }) {
   return (
-    <div className={cx('grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3', className)}>
+    <div className={cx('grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3', className)}>
       {studies.map((s, i) => (
         <CaseStudyCard key={s.slug} study={s} industry={industryOf?.(s.industry)} index={i} />
       ))}

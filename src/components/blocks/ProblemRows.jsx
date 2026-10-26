@@ -7,7 +7,7 @@ export function ProblemRows({ rows }) {
   return (
     <ul className="border-b border-line">
       {rows.map((row) => (
-        <li key={row.key} id={row.key} data-reveal className="grid scroll-mt-28 gap-5 border-t border-line py-10 lg:grid-cols-12 lg:gap-12">
+        <li key={row.key} id={row.key} data-reveal className="grid scroll-mt-28 gap-5 border-t border-line py-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4">
             {row.eyebrow && <p className="mb-3 text-xs font-semibold tracking-[0.12em] text-accent-strong uppercase">{row.eyebrow}</p>}
             <h3 className="text-2xl font-semibold tracking-tight">

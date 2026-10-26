@@ -52,7 +52,7 @@ function CaseStudyPage({ study }) {
         <CaseVisual study={study} industry={industryName(site, study.industry)} wide />
       </Container>
 
-      <Section className="!pt-12 sm:!pt-16">
+      <Section>
         <div className="grid gap-10 lg:grid-cols-12">
           <aside className="lg:col-span-3">
             <dl>

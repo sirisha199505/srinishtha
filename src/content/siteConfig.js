@@ -17,7 +17,7 @@ export const HEADER_CTA = { label: "Let's Talk", to: '/contact' }
 export const WORK_MENU = [
   { label: 'Case studies', text: 'Platforms we have engineered, from challenge to outcome.', to: '/work' },
   { label: 'Project archive', text: 'Websites, apps and portfolios delivered across sectors.', to: '/work#archive' },
-  { label: 'Srinishtha Labs', text: 'Our own products, built on the same framework.', to: '/products' },
+  { label: 'Srinishtha Projects', text: 'Our own products, built on the same framework.', to: '/products' },
 ]
 
 export const ABOUT_MENU = [
@@ -30,13 +30,13 @@ export const ABOUT_MENU = [
 ]
 
 export const FOOTER = {
-  description: 'Srinishtha Technologies designs and builds enterprise software, workflow automation and AI-enabled platforms for growing organisations.',
+  description: 'Srinishtha Technologies is a premium India-based product engineering studio, delivering senior-led, flexible custom software for SMEs, institutions and founders.',
   company: [
     { label: 'About Us', to: '/about' },
     { label: 'Leadership', to: '/leadership' },
     { label: 'How We Work', to: '/how-we-work' },
     { label: 'Our Work', to: '/work' },
-    { label: 'Srinishtha Labs', to: '/products' },
+    { label: 'Srinishtha Projects', to: '/products' },
     { label: 'Careers', to: '/careers' },
     { label: 'Contact', to: '/contact' },
   ],

@@ -9,9 +9,9 @@ export function LeadForm({ form, responseTime, initialInterest }) {
 
   if (status === 'success') {
     return (
-      <div role="status" className="border border-line bg-paper p-8 sm:p-10">
-        <span className="flex size-10 items-center justify-center rounded-full bg-success/10 text-success">
-          <Check className="size-5" />
+      <div role="status" className="lead-success border border-line bg-paper p-8 sm:p-10">
+        <span className="success-ring flex size-12 items-center justify-center rounded-full bg-success/10 text-success">
+          <Check className="draw-check size-6" />
         </span>
         <h2 className="mt-6 text-2xl font-semibold tracking-tight">Thank you, {values.name.split(' ')[0]}.</h2>
         <p className="mt-3 leading-relaxed text-muted">
@@ -23,7 +23,7 @@ export function LeadForm({ form, responseTime, initialInterest }) {
   }
 
   return (
-    <form onSubmit={submit} noValidate className="grid gap-5">
+    <form onSubmit={submit} noValidate className="lead-form grid gap-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField label="Full name" autoComplete="name" required {...field('name')} />
         <TextField label="Work email" type="email" autoComplete="email" required {...field('email')} />

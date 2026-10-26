@@ -10,10 +10,16 @@ const TONES = {
   navy: 'bg-navy text-muted-dark [&_h2]:text-white [&_h3]:text-white',
 }
 
+// Vertical padding shared by every page band (sections, CTA panel, logo strip, contact,
+// footer) so the rhythm is the same everywhere: 40px phone, 48px tablet, 56px desktop.
+export const SECTION_Y = 'py-10 sm:py-12 lg:py-14'
+export const SECTION_PT = 'pt-10 sm:pt-12 lg:pt-14'
+export const SECTION_PB = 'pb-10 sm:pb-12 lg:pb-14'
+
 // `dark` kept as an alias so older call sites keep working.
 export function Section({ tone = 'white', id, className, containerClassName, children, ...rest }) {
   return (
-    <section id={id} className={cx(TONES[tone === 'dark' ? 'navy' : tone], 'py-16 sm:py-24 lg:py-28', className)} {...rest}>
+    <section id={id} className={cx(TONES[tone === 'dark' ? 'navy' : tone], SECTION_Y, className)} {...rest}>
       <Container className={containerClassName}>{children}</Container>
     </section>
   )
@@ -29,7 +35,7 @@ export function Eyebrow({ children, inverse = false, className }) {
         className,
       )}
     >
-      <span aria-hidden="true" className="h-px w-6 bg-current" />
+      <span aria-hidden="true" className="eyebrow-line h-px w-6" />
       {children}
     </p>
   )
@@ -51,7 +57,7 @@ export function Highlighted({ text, highlight, inverse = false }) {
 // Editorial section heading: title left, lede (and optional action) right on wide screens.
 export function SectionHeading({ eyebrow, title, highlight, lede, as: Tag = 'h2', inverse = false, split = true, action, className }) {
   return (
-    <div data-reveal className={cx('mb-10 grid gap-5 sm:mb-14 lg:grid-cols-12 lg:gap-12', className)}>
+    <div data-reveal className={cx('mb-7 grid gap-4 lg:grid-cols-12 lg:gap-12', className)}>
       <div className={split ? 'lg:col-span-7' : 'lg:col-span-9'}>
         <Eyebrow inverse={inverse}>{eyebrow}</Eyebrow>
         <Tag className={cx('text-headline font-semibold', eyebrow && 'mt-4', inverse && 'text-white')}>

@@ -194,3 +194,15 @@ export function NamedIcon({ name, ...rest }) {
   const Component = NAMED[name] || Grid
   return <Component {...rest} />
 }
+
+export const Play = (p) => (
+  <Icon {...p}>
+    <path d="M7 4.5v15l12-7.5-12-7.5Z" />
+  </Icon>
+)
+
+export const Pause = (p) => (
+  <Icon {...p}>
+    <path d="M8 5v14M16 5v14" />
+  </Icon>
+)

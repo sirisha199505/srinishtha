@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { FOOTER, SOCIAL } from '../../content/siteConfig'
 import { SERVICES } from '../../content/services'
-import { Container } from '../ui/Layout'
+import { cx } from '../../lib/cx'
+import { Container, SECTION_PT } from '../ui/Layout'
 import { Linkedin, Mail, Phone, Pin } from '../ui/Icons'
 
 function Column({ title, links }) {
@@ -27,7 +28,7 @@ export function SiteFooter({ company, industries, legal }) {
   const year = new Date().getFullYear()
   return (
     <footer className="bg-navy-2 text-muted-dark">
-      <Container className="grid gap-12 pt-16 pb-12 sm:pt-20 lg:grid-cols-12 lg:gap-10">
+      <Container className={cx('grid gap-10 pb-8 lg:grid-cols-12 lg:gap-10', SECTION_PT)}>
         <div className="lg:col-span-4">
           <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="logo-white h-8 w-auto" />
           <p className="mt-6 max-w-sm text-[0.9375rem] leading-relaxed">{FOOTER.description}</p>

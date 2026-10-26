@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { cx } from '../../lib/cx'
-import { Container, Eyebrow } from '../ui/Layout'
+import { Container, Eyebrow, SECTION_PB } from '../ui/Layout'
 
 export function Breadcrumbs({ items, inverse = false }) {
   return (
@@ -32,7 +32,7 @@ export function Breadcrumbs({ items, inverse = false }) {
 export function PageHeader({ eyebrow, heading, lede, crumbs, children, tone = 'navy' }) {
   const inverse = tone === 'navy'
   return (
-    <header className={cx('relative isolate overflow-hidden pt-[calc(68px+3.5rem)] pb-14 sm:pb-20 lg:pt-[calc(76px+5rem)]', inverse ? 'bg-navy bg-blueprint' : 'border-b border-line bg-paper')}>
+    <header className={cx('relative isolate overflow-hidden pt-[calc(68px+2.5rem)] sm:pt-[calc(68px+3rem)] lg:pt-[calc(76px+3.5rem)]', SECTION_PB, inverse ? 'bg-navy bg-blueprint' : 'border-b border-line bg-paper')}>
       {inverse && (
         <>
           <div aria-hidden="true" className="absolute -top-24 -right-32 -z-10 size-[30rem] rounded-full border border-white/10" />

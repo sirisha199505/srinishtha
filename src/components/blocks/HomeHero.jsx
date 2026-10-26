@@ -21,9 +21,9 @@ function Headline({ lines, highlight }) {
 // Verified company facts (the `stats` content block), compact and hairline-separated.
 function HeroStats({ stats }) {
   return (
-    <dl className="reveal mt-12 grid max-w-[40rem] grid-cols-2 gap-y-6 border-t border-white/10 pt-8 short:mt-7 short:pt-5 [animation-delay:900ms] sm:grid-cols-4">
+    <dl className="reveal mt-10 grid max-w-[40rem] grid-cols-2 gap-y-6 border-t border-white/10 pt-6 short:mt-7 short:pt-5 [animation-delay:900ms] sm:grid-cols-4">
       {stats.map((s, i) => (
-        <div key={s.label} className={cx('flex flex-col-reverse pr-3', i % 2 ? 'border-l border-white/15 pl-5 sm:pl-6' : i && 'sm:border-l sm:border-white/15 sm:pl-6')}>
+        <div key={s.label} className={cx('flex flex-col-reverse justify-end pr-3', i % 2 ? 'border-l border-white/15 pl-5 sm:pl-6' : i && 'sm:border-l sm:border-white/15 sm:pl-6')}>
           <dt className="mt-1 text-[0.8125rem] leading-snug text-white/60">{s.label}</dt>
           <dd className="text-2xl font-semibold tracking-tight text-white tabular-nums sm:text-[1.75rem]">{s.value}</dd>
         </div>
@@ -41,7 +41,7 @@ export function HomeHero({ hero, stats }) {
       <div aria-hidden="true" className="absolute inset-y-0 left-0 -z-10 hidden w-[64%] bg-[linear-gradient(90deg,var(--color-navy)_40%,rgba(20,17,43,0.65)_52%,transparent)] lg:block" />
 
       <Container className="flex min-h-[min(100svh,880px)] flex-col justify-center pt-[68px] pb-[52vw] sm:pb-[min(47vw,380px)] lg:min-h-[max(560px,min(100svh,920px))] lg:pt-[76px] lg:pb-0">
-        <div className="py-12 sm:py-16 lg:max-w-[40rem] lg:py-20 short:py-8">
+        <div className="py-10 sm:py-14 lg:max-w-[40rem] lg:py-16 short:py-8">
           <Eyebrow inverse className="reveal tracking-[0.3em]">{hero.eyebrow}</Eyebrow>
           <div className="mt-6 sm:mt-7 short:mt-4">
             <Headline lines={hero.headline} highlight={hero.highlight} />

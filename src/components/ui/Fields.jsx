@@ -5,7 +5,8 @@ import { Eye, EyeOff } from './Icons'
 const CONTROL =
   'block min-h-12 w-full rounded-[3px] border bg-white px-4 py-3 text-[0.9375rem] text-ink transition-colors placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20'
 
-// Visible label, hint and accessible inline error for any form control.
+// Visible label, hint and accessible inline error for any form control. A line in the logo
+// colours draws across the bottom of the control while it has focus (index.css: .field-*).
 function Field({ label, hint, error, optional, children }) {
   const id = useId()
   const describedBy = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
@@ -15,7 +16,10 @@ function Field({ label, hint, error, optional, children }) {
         {label}
         {optional && <span className="font-normal text-muted">Optional</span>}
       </label>
-      {children({ id, 'aria-describedby': describedBy, 'aria-invalid': error ? true : undefined })}
+      <div className="field-line relative">
+        {children({ id, 'aria-describedby': describedBy, 'aria-invalid': error ? true : undefined })}
+        <span aria-hidden="true" className="field-glow bg-brand-line pointer-events-none absolute inset-x-0 bottom-0 h-0.5 rounded-b-[3px]" />
+      </div>
       {hint && !error && (
         <p id={`${id}-hint`} className="mt-1.5 text-sm text-muted">
           {hint}

@@ -11,7 +11,7 @@ export function StatsBar({ stats, inverse = false, className }) {
           data-reveal
           style={revealDelay(i)}
           className={cx(
-            'flex flex-col-reverse border-t py-6 pr-4 lg:py-7',
+            'flex flex-col-reverse justify-end border-t py-6 pr-4 lg:py-7',
             i % 2 === 1 && 'border-l pl-5 sm:pl-8',
             i > 0 && 'lg:border-l lg:pl-8',
             inverse ? 'border-line-dark' : 'border-line',

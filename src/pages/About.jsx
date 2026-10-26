@@ -33,7 +33,7 @@ export default function About() {
             <TextLink to="/leadership" className="mt-8">Meet our leadership</TextLink>
           </div>
         </div>
-        <StatsBar stats={site.stats} className="mt-16 sm:mt-20" />
+        <StatsBar stats={site.stats} className="mt-8 sm:mt-10" />
       </Section>
 
       <Section tone="paper">

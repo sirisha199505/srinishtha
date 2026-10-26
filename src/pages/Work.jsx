@@ -20,7 +20,7 @@ export default function Work() {
       <PageHeader {...meta} crumbs={[{ label: 'Our Work' }]} />
       <Section>
         <h2 className="sr-only">{labels.flagship}</h2>
-        <div className="space-y-20 sm:space-y-24">
+        <div className="space-y-8 sm:space-y-10">
           {flagship.map((s, i) => (
             <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} feature index={i} />
           ))}
