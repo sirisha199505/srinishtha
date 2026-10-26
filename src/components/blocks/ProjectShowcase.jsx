@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { caseStudyPath } from '../../content/selectors'
-import { pad } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 import { track } from '../../lib/track'
 import { ArrowRight, ArrowUpRight } from '../ui/Icons'
@@ -148,10 +147,9 @@ function ProjectSlider({ projects }) {
       onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false)}
       onKeyDown={onKeyDown}
     >
-      <div className="mb-4 flex items-center justify-between gap-6">
-        <p className="text-sm font-semibold text-ink tabular-nums" aria-live="polite">
-          {pad(index + 1)} <span className="text-muted">/ {pad(n)}</span>
-          <span className="sr-only">: {projects[index]?.client}</span>
+      <div className="mb-4 flex items-center justify-end gap-6">
+        <p className="sr-only" aria-live="polite">
+          {projects[index]?.client}
         </p>
         <div className="flex gap-2">
           {[

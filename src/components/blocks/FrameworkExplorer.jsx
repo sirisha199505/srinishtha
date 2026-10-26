@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { pad } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 import { track } from '../../lib/track'
 import { ChevronDown } from '../ui/Icons'
@@ -63,7 +62,6 @@ export function FrameworkExplorer({ layers, disclaimer }) {
                 )}
               >
                 <span aria-hidden="true" className={cx('absolute inset-y-0 left-0 w-0.5 bg-accent-bright transition-opacity', selected ? 'opacity-100' : 'opacity-0')} />
-                <span className="w-6 text-xs tabular-nums opacity-60">{pad(i + 1)}</span>
                 <span className="font-medium">{l.name}</span>
               </button>
             )
@@ -82,11 +80,10 @@ export function FrameworkExplorer({ layers, disclaimer }) {
           <li key={l.key}>
             <details className="group">
               <summary className="flex min-h-14 cursor-pointer list-none items-center gap-4 py-4 [&::-webkit-details-marker]:hidden">
-                <span className="w-6 text-xs text-accent-bright tabular-nums">{pad(i + 1)}</span>
                 <span className="flex-1 font-semibold text-white">{l.name}</span>
                 <ChevronDown className="size-5 text-muted-dark transition-transform group-open:rotate-180" />
               </summary>
-              <div className="pb-5 pl-10">
+              <div className="pb-5">
                 <p className="text-white/85">{l.value}</p>
                 <p className="mt-2 text-sm text-muted-dark">{l.modules.join(' · ')}</p>
               </div>

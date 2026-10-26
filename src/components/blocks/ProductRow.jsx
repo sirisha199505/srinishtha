@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { caseStudyPath } from '../../content/selectors'
-import { pad } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 import { ArrowRight, ArrowUpRight } from '../ui/Icons'
 import { Tag } from '../ui/Layout'
@@ -30,8 +29,7 @@ export function ProductRow({ product, storyLabel, index = 0 }) {
   return (
     <article data-reveal className="product-row grid gap-6 border-t border-line pt-8 lg:grid-cols-12 lg:items-center lg:gap-10">
       <div className={cx('product-copy cine-copy lg:col-span-5', flip && 'lg:order-2')}>
-        <p aria-hidden="true" className="text-brand-gradient text-3xl font-bold tracking-tight">{pad(index + 1)}</p>
-        <div className="mt-3 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {product.logo && <img src={product.logo} alt={`${product.name} logo`} className="h-8 w-auto max-w-[200px] object-contain" />}
           {product.status && <Tag>{product.status}</Tag>}
         </div>

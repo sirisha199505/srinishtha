@@ -97,7 +97,7 @@ function CaseStudyPage({ study }) {
                 <p>{study.challenge}</p>
               </Block>
               <Block title={labels.approach}>
-                <RuleList items={study.approach} numbered className="-mt-4" />
+                <RuleList items={study.approach} className="-mt-4" />
               </Block>
               <Block title={labels.outcome}>
                 <p>{study.outcome}</p>

@@ -48,7 +48,7 @@ export default function About() {
 
       <Section>
         <SectionHeading eyebrow={labels.principles} title={labels.principlesTitle} action={<TextLink to="/how-we-work">How we work</TextLink>} />
-        <FeatureGrid items={site.principles} numbered />
+        <FeatureGrid items={site.principles} />
       </Section>
 
       <Section tone="paper">

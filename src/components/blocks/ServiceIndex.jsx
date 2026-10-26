@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { pad, revealDelay } from '../../lib/brand'
+import { revealDelay } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 import { ArrowRight, NamedIcon } from '../ui/Icons'
 
@@ -16,10 +16,8 @@ export function ServiceIndex({ services, compact = false }) {
               <span className="flex size-12 items-center justify-center rounded-full bg-accent-soft text-accent-strong transition-colors duration-300 group-hover:bg-accent group-hover:text-white">
                 <NamedIcon name={s.icon} className="size-6" />
               </span>
-              {compact ? (
+              {compact && (
                 <ArrowRight className="size-4 text-accent-strong opacity-0 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
-              ) : (
-                <span className="text-xs font-semibold text-muted tabular-nums">{pad(i + 1)}</span>
               )}
             </div>
             <h3 className={cx('leading-snug font-semibold tracking-tight', compact ? 'mt-6 text-base sm:text-lg' : 'mt-8 text-lg sm:mt-10')}>{s.title}</h3>

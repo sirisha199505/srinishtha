@@ -1,4 +1,4 @@
-import { pad, revealDelay } from '../../lib/brand'
+import { revealDelay } from '../../lib/brand'
 import { cx } from '../../lib/cx'
 
 // Numbered process (approach, delivery model, hiring process). Desktop: a horizontal sequence
@@ -18,12 +18,13 @@ export function StepFlow({ steps, inverse = false }) {
               <span aria-hidden="true" className={cx('absolute top-11 bottom-0 left-[1.375rem] w-px lg:hidden', inverse ? 'bg-line-dark' : 'bg-line')} />
             )}
             <span
+              aria-hidden="true"
               className={cx(
-                'relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border text-sm font-semibold tabular-nums',
-                inverse ? 'border-accent-bright bg-navy text-white' : 'border-accent bg-white text-accent-strong',
+                'relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full border',
+                inverse ? 'border-accent-bright bg-navy' : 'border-accent bg-white',
               )}
             >
-              {pad(i + 1)}
+              <span className={cx('size-2.5 rounded-full', inverse ? 'bg-accent-bright' : 'bg-accent')} />
             </span>
             <div className="lg:mt-7">
               <h3 className="text-xl font-semibold tracking-tight">{s.title}</h3>

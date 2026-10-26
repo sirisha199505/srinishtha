@@ -76,9 +76,6 @@ function CinematicView({ photos, index, onIndex, onClose }) {
       <div key={index} className="cine-credit absolute bottom-[calc(9vh+2rem)] left-6 max-w-[80vw] sm:left-12">
         <p className="text-xs font-semibold tracking-[0.3em] text-accent-bright uppercase">Life at Srinishtha</p>
         <p className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">{photo.title}</p>
-        <p className="mt-3 text-sm text-white/60 tabular-nums">
-          {String(index + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
-        </p>
       </div>
 
       {/* Controls, in the bottom bar */}
