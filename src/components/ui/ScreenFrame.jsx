@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { cx } from '../../lib/cx'
 
 const hostOf = (url) => {
@@ -11,6 +12,9 @@ const hostOf = (url) => {
 // Presents a product screenshot uncropped: a browser window for desktop captures (2:1),
 // a phone outline for mobile captures. Photos (no `device`) fill a 2:1 frame.
 export function ScreenFrame({ src, alt = '', url, device = 'desktop', className, imgClassName }) {
+  // Captures wider than the 2:1 frame are shown whole (never cropped at the sides) over a
+  // blurred copy of themselves; taller ones fill the width and lose only the bottom.
+  const [wide, setWide] = useState(false)
   if (device === 'mobile') {
     return (
       <div className={cx('flex aspect-[2/1] items-center justify-center overflow-hidden rounded-[4px] border border-line bg-paper', className)}>
@@ -38,7 +42,16 @@ export function ScreenFrame({ src, alt = '', url, device = 'desktop', className,
         <span className="size-2 rounded-full bg-line" />
         {host && <span className="ml-3 truncate text-[0.6875rem] text-muted">{host}</span>}
       </div>
-      <img src={src} alt={alt} loading="lazy" className={cx('aspect-[2/1] w-full object-cover object-top', imgClassName)} />
+      <div className="relative aspect-[2/1] overflow-hidden">
+        {wide && <img src={src} alt="" aria-hidden="true" className="absolute inset-0 size-full scale-110 object-cover object-bottom blur-xl" />}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onLoad={(e) => setWide(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight > 2.01)}
+          className={cx('relative size-full object-top', wide ? 'object-contain' : 'object-cover', imgClassName)}
+        />
+      </div>
     </div>
   )
 }
