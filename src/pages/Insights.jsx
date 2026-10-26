@@ -10,7 +10,7 @@ export default function Insights() {
   usePageMeta('insights')
   return (
     <>
-      <PageHeader eyebrow={insights.eyebrow} heading={insights.title} lede={insights.lede} />
+      <PageHeader crumbs={[{ label: 'Insights' }]} eyebrow={insights.eyebrow} heading={insights.title} lede={insights.lede} />
       <Section>
         <ProblemRows rows={insights.pillars.map((p) => ({ key: p.title, title: p.title, list: p.topics }))} />
       </Section>

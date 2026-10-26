@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom'
-import { capabilityPath } from '../../content/selectors'
+import { FOOTER, SOCIAL } from '../../content/siteConfig'
+import { SERVICES } from '../../content/services'
 import { Container } from '../ui/Layout'
-import { Mail, Phone, Pin } from '../ui/Icons'
+import { Linkedin, Mail, Phone, Pin } from '../ui/Icons'
 
 function Column({ title, links }) {
   return (
     <div>
-      <h2 className="text-sm font-medium text-white">{title}</h2>
-      <ul className="mt-4 space-y-3">
+      <h2 className="text-xs font-semibold tracking-[0.14em] text-white uppercase">{title}</h2>
+      <ul className="mt-5 space-y-3">
         {links.map((l) => (
-          <li key={l.to}>
-            <Link to={l.to} className="text-sm text-muted-dark hover:text-white">
+          <li key={l.to + l.label}>
+            <Link to={l.to} className="text-sm text-muted-dark transition-colors hover:text-gold">
               {l.label}
             </Link>
           </li>
@@ -20,46 +21,56 @@ function Column({ title, links }) {
   )
 }
 
-export function SiteFooter({ company, navigation, capabilities }) {
+const SOCIAL_ICONS = { linkedin: Linkedin }
+
+export function SiteFooter({ company, industries, legal }) {
   const year = new Date().getFullYear()
   return (
-    <footer className="bg-ink text-muted-dark">
-      <div aria-hidden="true" className="h-[3px] bg-brand-gradient" />
-      <Container className="grid gap-8 py-10 lg:grid-cols-12">
+    <footer className="bg-navy-2 text-muted-dark">
+      <Container className="grid gap-12 pt-16 pb-12 sm:pt-20 lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-4">
-          <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="h-8 w-auto" />
-          <p className="mt-5 max-w-sm text-sm leading-relaxed">{company.promise}</p>
-          <ul className="mt-6 space-y-3 text-sm">
+          <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="logo-white h-8 w-auto" />
+          <p className="mt-6 max-w-sm text-[0.9375rem] leading-relaxed">{FOOTER.description}</p>
+          <ul className="mt-8 space-y-3.5 text-sm">
             <li className="flex gap-3">
-              <Mail className="size-4 shrink-0 translate-y-0.5" />
+              <Mail className="size-4 shrink-0 translate-y-0.5 text-accent-bright" />
               <a href={`mailto:${company.email}`} className="hover:text-white">{company.email}</a>
             </li>
             <li className="flex gap-3">
-              <Phone className="size-4 shrink-0 translate-y-0.5" />
+              <Phone className="size-4 shrink-0 translate-y-0.5 text-accent-bright" />
               <a href={company.phoneHref} className="hover:text-white">{company.phone}</a>
             </li>
             <li className="flex gap-3">
-              <Pin className="size-4 shrink-0 translate-y-0.5" />
-              <a href={company.mapUrl} target="_blank" rel="noopener noreferrer" className="leading-relaxed hover:text-white">{company.address}</a>
+              <Pin className="size-4 shrink-0 translate-y-0.5 text-accent-bright" />
+              <a href={company.mapUrl} target="_blank" rel="noopener noreferrer" className="max-w-xs leading-relaxed hover:text-white">{company.address}</a>
             </li>
           </ul>
+          {SOCIAL.length > 0 && (
+            <ul className="mt-8 flex gap-3">
+              {SOCIAL.map((s) => {
+                const Icon = SOCIAL_ICONS[s.network]
+                return (
+                  <li key={s.href}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="flex size-10 items-center justify-center rounded-[3px] border border-line-dark hover:border-white hover:text-white">
+                      {Icon ? <Icon className="size-5" /> : s.label}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
         </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
-          <div className="col-span-2 sm:col-span-1">
-            <Column title="Capabilities" links={capabilities.map((c) => ({ label: c.title, to: capabilityPath(c.slug) }))} />
-          </div>
-          <Column
-            title="Explore"
-            links={navigation.primary.filter((n) => !['Capabilities', 'Company'].includes(n.label)).map((n) => ({ label: n.label, to: n.to }))}
-          />
-          <Column title="Company" links={navigation.company} />
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-8 lg:pl-10">
+          <Column title="Services" links={SERVICES.map((s) => ({ label: s.title, to: s.to }))} />
+          <Column title="Industries" links={industries.map((i) => ({ label: i.name, to: `/industries#${i.slug}` }))} />
+          <Column title="Company" links={FOOTER.company} />
         </div>
       </Container>
       <Container>
-        <div className="flex flex-col gap-3 border-t border-line-dark py-5 text-xs sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-line-dark py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} {company.legalName}. All rights reserved.</p>
           <ul className="flex gap-6">
-            {navigation.legal.map((l) => (
+            {legal.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="hover:text-white">{l.label}</Link>
               </li>

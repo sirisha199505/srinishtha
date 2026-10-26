@@ -4,14 +4,13 @@ import { useSite } from '../content/SiteProvider'
 import { bySlug, capabilityPath, industryName, pickSlugs, testimonialFor } from '../content/selectors'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { track } from '../lib/track'
-import { CaseStudyGrid } from '../components/blocks/CaseStudyCard'
+import { CaseStudyGrid, CaseVisual } from '../components/blocks/CaseStudyCard'
 import { PageHeader } from '../components/blocks/PageHeader'
 import { Quote } from '../components/blocks/Quote'
 import { ClosingCta } from '../components/layout/ClosingCta'
 import { ArrowUpRight } from '../components/ui/Icons'
 import { Container, Section, SectionHeading } from '../components/ui/Layout'
 import { RuleList } from '../components/ui/RuleList'
-import { ScreenFrame } from '../components/ui/ScreenFrame'
 import NotFound from './NotFound'
 
 function Fact({ label, children }) {
@@ -25,9 +24,9 @@ function Fact({ label, children }) {
 
 function Block({ title, children }) {
   return (
-    <section className="grid gap-3 border-t border-line py-7 lg:grid-cols-12 lg:gap-10">
-      <h2 className="text-xl font-semibold lg:col-span-4">{title}</h2>
-      <div className="leading-relaxed text-body lg:col-span-8">{children}</div>
+    <section className="grid gap-3 border-t border-line py-9 lg:grid-cols-12 lg:gap-10">
+      <h2 className="text-xs font-semibold tracking-[0.14em] text-accent-strong uppercase lg:col-span-3 lg:pt-1.5">{title}</h2>
+      <div className="text-[1.0625rem] leading-relaxed text-body lg:col-span-9">{children}</div>
     </section>
   )
 }
@@ -46,18 +45,14 @@ function CaseStudyPage({ study }) {
       <PageHeader
         eyebrow={`${labels.eyebrow} · ${study.client}`}
         heading={study.title}
-        crumbs={[{ label: labels.all, to: '/work' }, { label: study.client }]}
+        crumbs={[{ label: 'Our Work', to: '/work' }, { label: study.client }]}
       />
 
-      <Container className="pt-8 sm:pt-10">
-        {study.screenshot ? (
-          <ScreenFrame src={study.screenshot} alt={`${study.client} platform`} url={study.url} device={study.device} />
-        ) : (
-          <ScreenFrame src={study.image} alt={`${study.client}`} device="photo" />
-        )}
+      <Container className="relative -mt-6 sm:-mt-8">
+        <CaseVisual study={study} industry={industryName(site, study.industry)} wide />
       </Container>
 
-      <Section className="!pt-8 sm:!pt-10">
+      <Section className="!pt-12 sm:!pt-16">
         <div className="grid gap-10 lg:grid-cols-12">
           <aside className="lg:col-span-3">
             <dl>
@@ -68,7 +63,7 @@ function CaseStudyPage({ study }) {
                 <ul className="space-y-1">
                   {capabilities.map((c) => (
                     <li key={c.slug}>
-                      <Link to={capabilityPath(c.slug)} className="text-accent hover:text-accent-strong">
+                      <Link to={capabilityPath(c.slug)} className="text-accent-strong hover:text-ink">
                         {c.title}
                       </Link>
                     </li>
@@ -82,7 +77,7 @@ function CaseStudyPage({ study }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => track('outbound_client_link', { client: study.client })}
-                className="mt-4 inline-flex items-center gap-1.5 border-t border-line pt-4 text-sm font-medium text-accent"
+                className="mt-4 inline-flex items-center gap-1.5 border-t border-line pt-4 text-sm font-semibold text-accent-strong"
               >
                 {labels.visit} <ArrowUpRight className="size-4" />
               </a>
@@ -90,11 +85,11 @@ function CaseStudyPage({ study }) {
           </aside>
 
           <article className="lg:col-span-9">
-            <p className="text-lg leading-relaxed text-ink sm:text-xl sm:leading-relaxed">{study.summary}</p>
+            <p className="text-xl leading-relaxed font-medium tracking-tight text-ink sm:text-2xl sm:leading-snug">{study.summary}</p>
             {study.metric && (
-              <p className="mt-7">
-                <span className="block text-4xl font-semibold tracking-tight text-ink">{study.metric.value}</span>
-                <span className="text-muted">{study.metric.label}</span>
+              <p className="mt-8 flex items-end gap-5 bg-navy px-6 py-5 text-white sm:px-8">
+                <span className="text-4xl leading-none font-semibold tracking-tight sm:text-5xl">{study.metric.value}</span>
+                <span className="pb-1 text-sm text-muted-dark">{study.metric.label}</span>
               </p>
             )}
             <div className="mt-8">
@@ -121,7 +116,7 @@ function CaseStudyPage({ study }) {
       )}
 
       <Section>
-        <SectionHeading title={labels.more} />
+        <SectionHeading eyebrow="More work" title={labels.more} />
         <CaseStudyGrid studies={more} industryOf={(slug) => industryName(site, slug)} />
       </Section>
 

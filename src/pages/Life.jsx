@@ -14,7 +14,7 @@ export default function Life() {
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'About Us', to: '/about' }, { label: 'Life at Srinishtha' }]} />
 
       <Section>
         <SectionHeading eyebrow={labels.life} title={labels.lifeTitle} />

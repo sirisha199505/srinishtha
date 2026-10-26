@@ -13,7 +13,7 @@ export default function Leadership() {
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'About Us', to: '/about' }, { label: 'Leadership' }]} />
 
       <Section>
         <SectionHeading eyebrow={labels.leadership} title={labels.leadershipTitle} />

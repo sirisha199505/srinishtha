@@ -1,84 +1,77 @@
 import { useSite } from '../content/SiteProvider'
-import { flagships, industryName, pillars, testimonialFor } from '../content/selectors'
+import { bySlug, industryName, testimonialFor } from '../content/selectors'
+import { APPROACH, FINAL_CTA, HERO, INDUSTRIES, SERVICES_INTRO, TRUST, WHY, WORK } from '../content/home'
+import { SERVICES } from '../content/services'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { CapabilityList } from '../components/blocks/CapabilityList'
-import { CaseStudyCard } from '../components/blocks/CaseStudyCard'
-import { FeatureGrid } from '../components/blocks/FeatureGrid'
-import { FrameworkExplorer } from '../components/blocks/FrameworkExplorer'
+import { CtaPanel } from '../components/blocks/CtaPanel'
 import { HomeHero } from '../components/blocks/HomeHero'
+import { IndustryIndex } from '../components/blocks/IndustryIndex'
 import { LogoWall } from '../components/blocks/LogoWall'
-import { ProductRow } from '../components/blocks/ProductRow'
-import { Quote } from '../components/blocks/Quote'
+import { ProjectShowcase } from '../components/blocks/ProjectShowcase'
+import { ServiceIndex } from '../components/blocks/ServiceIndex'
 import { StepFlow } from '../components/blocks/StepFlow'
-import { ClosingCta } from '../components/layout/ClosingCta'
+import { WhyList } from '../components/blocks/WhyList'
 import { MoreLink } from '../components/ui/Button'
-import { Section, SectionHeading } from '../components/ui/Layout'
+import { Container, Section, SectionHeading } from '../components/ui/Layout'
 
+// Each fact appears once: company figures in the hero, clients in the logo strip,
+// projects (with the client quote) in Our work.
 export default function Home() {
   const site = useSite()
-  const { home } = site
   usePageMeta('home')
-  const [lead, ...supporting] = flagships(site)
-  const industryOf = (slug) => industryName(site, slug)
+  const lead = bySlug(site.caseStudies, WORK.lead)
+  const projects = WORK.projects.map((name) => site.projects.find((p) => p.client === name)).filter((p) => p?.screenshot)
 
   return (
     <>
-      <HomeHero hero={site.hero} cta={site.ctas.global} stats={site.stats} />
+      {/* 1 · Hero */}
+      <HomeHero hero={HERO} stats={site.stats} nextId="clients" />
 
-      <Section className="!py-8 sm:!py-10">
-        <LogoWall
-          clients={[...site.clients, ...site.products.items.filter((p) => p.logo).map((p) => ({ name: p.name, logo: p.logo }))]}
-          label={home.trustLabel}
-        />
-      </Section>
+      {/* 2 · Clients */}
+      <section id="clients" aria-labelledby="clients-title" className="border-b border-line bg-white py-12 sm:py-14">
+        <Container className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-12">
+          <h2 id="clients-title" className="text-center text-xs font-semibold tracking-[0.16em] text-muted uppercase lg:col-span-2 lg:text-left">{TRUST.label}</h2>
+          <LogoWall clients={site.clients} marquee className="lg:col-span-10" />
+        </Container>
+      </section>
 
-      <Section tone="paper">
-        <SectionHeading {...home.capabilities} action={<MoreLink link={home.capabilities.link} />} />
-        <CapabilityList capabilities={pillars(site)} />
-      </Section>
-
-      <Section tone="dark">
-        <SectionHeading {...site.framework} inverse />
-        <FrameworkExplorer layers={site.framework.layers} disclaimer={site.framework.disclaimer} />
-      </Section>
-
+      {/* 3 · Our work */}
       <Section>
-        <SectionHeading {...home.work} action={<MoreLink link={home.work.link} />} />
-        <CaseStudyCard study={lead} industry={industryOf(lead.industry)} feature />
-        <div className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2">
-          {supporting.slice(0, 2).map((s) => (
-            <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} />
-          ))}
-        </div>
+        <SectionHeading {...WORK} action={<MoreLink link={WORK.link} />} />
+        <ProjectShowcase lead={lead} industry={industryName(site, lead?.industry)} testimonial={testimonialFor(site, WORK.testimonial)} projects={projects} />
       </Section>
 
+      {/* 4 · What we do */}
       <Section tone="paper">
-        <SectionHeading {...home.products} action={<MoreLink link={home.products.link} />} />
-        <ProductRow product={site.products.items[0]} storyLabel={site.labels.products.caseStudy} />
+        <SectionHeading {...SERVICES_INTRO} action={<MoreLink link={SERVICES_INTRO.link} />} />
+        <ServiceIndex services={SERVICES} compact />
       </Section>
 
+      {/* 5 · Industries */}
       <Section>
-        <SectionHeading {...site.automationFlow} />
-        <StepFlow steps={site.automationFlow.steps} />
+        <SectionHeading {...INDUSTRIES} action={<MoreLink link={INDUSTRIES.link} />} />
+        <IndustryIndex industries={site.industries} />
       </Section>
 
-      <Section>
-        <SectionHeading {...site.appliedAi} action={<MoreLink link={home.ai.link} />} />
-        <FeatureGrid items={site.appliedAi.items} />
-      </Section>
-
+      {/* 6 · Why Srinishtha */}
       <Section tone="paper">
-        <SectionHeading {...home.industries} action={<MoreLink link={home.industries.link} />} />
-        <FeatureGrid items={site.industries.map((i) => ({ title: i.name, text: i.problem }))} />
+        <SectionHeading {...WHY} />
+        <WhyList items={WHY.items} />
       </Section>
 
-      <Section tone="dark">
-        <div className="max-w-4xl">
-          <Quote testimonial={testimonialFor(site, 'sids-farm')} inverse />
-        </div>
+      {/* 7 · Our approach */}
+      <Section>
+        <SectionHeading {...APPROACH} />
+        <StepFlow steps={APPROACH.steps} />
       </Section>
 
-      <ClosingCta />
+      {/* 8 · Final CTA */}
+      <CtaPanel question={FINAL_CTA.title} highlight={FINAL_CTA.highlight} lede={FINAL_CTA.lede} cta={FINAL_CTA.cta}>
+        <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-dark">
+          <a href={`mailto:${site.company.email}`} className="hover:text-gold">{site.company.email}</a>
+          <a href={site.company.phoneHref} className="hover:text-gold">{site.company.phone}</a>
+        </p>
+      </CtaPanel>
     </>
   )
 }

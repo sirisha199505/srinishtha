@@ -13,7 +13,7 @@ export default function HowWeWork() {
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'About Us', to: '/about' }, { label: 'How We Work' }]} />
 
       <Section>
         <SectionHeading eyebrow={site.delivery.eyebrow} title={site.delivery.title} lede={site.delivery.lede} />

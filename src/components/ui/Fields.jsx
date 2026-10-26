@@ -3,7 +3,7 @@ import { cx } from '../../lib/cx'
 import { Eye, EyeOff } from './Icons'
 
 const CONTROL =
-  'block w-full rounded-md border bg-white px-3.5 py-2.5 text-[0.9375rem] text-ink transition-colors placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20'
+  'block min-h-12 w-full rounded-[3px] border bg-white px-4 py-3 text-[0.9375rem] text-ink transition-colors placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20'
 
 // Visible label, hint and accessible inline error for any form control.
 function Field({ label, hint, error, optional, children }) {
@@ -54,7 +54,7 @@ export function PasswordField({ label, hint, error, optional, className, ...inpu
             onClick={() => setVisible((v) => !v)}
             aria-label={visible ? 'Hide password' : 'Show password'}
             aria-pressed={visible}
-            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-muted hover:text-ink"
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-[3px] text-muted hover:text-ink"
           >
             <Toggle className="size-5" />
           </button>

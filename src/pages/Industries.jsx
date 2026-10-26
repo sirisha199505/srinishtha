@@ -1,5 +1,6 @@
 import { useSite } from '../content/SiteProvider'
 import { caseStudyPath, pickSlugs } from '../content/selectors'
+import { INDUSTRY_IMAGES } from '../content/home'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { PageHeader } from '../components/blocks/PageHeader'
 import { ProblemRows } from '../components/blocks/ProblemRows'
@@ -14,12 +15,13 @@ export default function Industries() {
     title: i.name,
     text: i.problem,
     list: i.solutions,
+    image: INDUSTRY_IMAGES[i.slug],
     links: pickSlugs(site.caseStudies, i.caseStudies).map((s) => ({ label: `${site.labels.industries.caseStudies}: ${s.client}`, to: caseStudyPath(s.slug) })),
   }))
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'Industries' }]} />
       <Section>
         <ProblemRows rows={rows} />
       </Section>

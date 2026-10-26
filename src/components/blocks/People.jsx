@@ -1,4 +1,5 @@
-import { brandColor, revealDelay } from '../../lib/brand'
+import { revealDelay } from '../../lib/brand'
+import { Quote as QuoteMark } from '../ui/Icons'
 
 const initials = (name) =>
   name
@@ -8,10 +9,10 @@ const initials = (name) =>
     .join('')
 
 // Portrait when supplied in content, otherwise a quiet monogram.
-function Avatar({ name, image, color }) {
-  if (image) return <img src={image} alt="" loading="lazy" className="size-16 rounded-full bg-paper object-cover" />
+function Avatar({ name, image, size = 'size-16' }) {
+  if (image) return <img src={image} alt="" loading="lazy" className={`${size} rounded-full bg-paper object-cover`} />
   return (
-    <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-full text-lg font-semibold text-white" style={{ background: color }}>
+    <span aria-hidden="true" className={`flex ${size} shrink-0 items-center justify-center rounded-full bg-navy text-base font-semibold tracking-wide text-gold ring-1 ring-gold/40 ring-offset-2 ring-offset-canvas`}>
       {initials(name)}
     </span>
   )
@@ -19,17 +20,17 @@ function Avatar({ name, image, color }) {
 
 export function LeaderGrid({ leaders }) {
   return (
-    <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
       {leaders.map((l, i) => (
-        <li key={l.name} data-reveal style={revealDelay(i)} className="border-t border-line pt-5">
+        <li key={l.name} data-reveal style={revealDelay(i)} className="border-t border-line py-8">
           <div className="flex items-center gap-4">
-            <Avatar name={l.name} image={l.image} color={brandColor(i)} />
+            <Avatar name={l.name} image={l.image} />
             <div>
-              <h3 className="text-lg font-semibold">{l.name}</h3>
-              <p className="text-sm text-muted">{l.role}</p>
+              <h3 className="text-lg font-semibold tracking-tight">{l.name}</h3>
+              <p className="text-sm font-medium text-accent-strong">{l.role}</p>
             </div>
           </div>
-          <p className="mt-4 text-[0.9375rem] leading-relaxed text-muted">{l.bio}</p>
+          <p className="mt-5 text-[0.9375rem] leading-relaxed text-muted">{l.bio}</p>
         </li>
       ))}
     </ul>
@@ -38,22 +39,15 @@ export function LeaderGrid({ leaders }) {
 
 export function VoiceGrid({ voices }) {
   return (
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
       {voices.map((v, i) => (
-        <li
-          key={v.author}
-          data-reveal
-          style={{ ...revealDelay(i), borderTopColor: brandColor(i) }}
-          className="flex flex-col rounded-2xl border border-t-4 border-line bg-white p-6 shadow-[0_12px_30px_-20px_rgba(20,20,40,0.35)]"
-        >
-          <span aria-hidden="true" className="font-serif text-5xl leading-none" style={{ color: brandColor(i) }}>“</span>
-          <blockquote className="mt-2 flex-1 text-[0.9375rem] leading-relaxed text-ink">{v.quote}</blockquote>
-          <div className="mt-6 flex items-center gap-3 border-t border-line pt-4">
-            <span aria-hidden="true" className="flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white" style={{ background: brandColor(i) }}>
-              {initials(v.author)}
-            </span>
+        <li key={v.author} data-reveal style={revealDelay(i % 4)} className="flex flex-col border-t border-line py-8">
+          <QuoteMark className="size-6 text-accent-strong" />
+          <blockquote className="mt-4 flex-1 text-[0.9375rem] leading-relaxed text-body">{v.quote}</blockquote>
+          <div className="mt-6 flex items-center gap-3">
+            <Avatar name={v.author} size="size-10" />
             <div>
-              <p className="font-semibold text-ink">{v.author}</p>
+              <p className="text-sm font-semibold text-ink">{v.author}</p>
               <p className="text-xs text-muted">{v.role}</p>
             </div>
           </div>

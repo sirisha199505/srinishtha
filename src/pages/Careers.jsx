@@ -17,8 +17,8 @@ export default function Careers() {
 
   return (
     <>
-      <PageHeader eyebrow={careers.eyebrow} heading={careers.title} lede={careers.lede}>
-        <CtaPair cta={cta} />
+      <PageHeader eyebrow={careers.eyebrow} heading={careers.title} lede={careers.lede} crumbs={[{ label: 'About Us', to: '/about' }, { label: careers.eyebrow }]}>
+        <CtaPair cta={cta} inverse />
       </PageHeader>
 
       <Section>

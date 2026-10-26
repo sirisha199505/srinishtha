@@ -3,35 +3,46 @@
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --color-ink: #0b0f1a;
-  --color-ink-2: #141a2a;
-  --color-ink-3: #232a3d;
-  --color-paper: #f8f5ff;
+  /* Corporate palette: charcoal + warm white foundation, champagne gold for highlights,
+     burnt amber for buttons and links. `navy` is the historical name of the dark surface. */
+  --color-navy: #17212b;
+  --color-navy-2: #111921;
+  --color-navy-3: #1f2c39;
+  --color-ink: #17212b;
+  --color-body: #35465a;
+  --color-muted: #5e6e80;
+  --color-muted-dark: #aeb8c3;
+  --color-canvas: #fffcf7;
+  --color-paper: #f1f3f5;
   --color-white: #ffffff;
-  --color-line: #ece8f5;
-  --color-line-dark: #2a3146;
-  --color-body: #3a4050;
-  --color-muted: #6b7080;
-  --color-muted-dark: #9aa0b2;
-  --color-accent: #8a3fd1;
-  --color-accent-strong: #6f2fb0;
-  --color-accent-soft: #f1e8fb;
-
-  /* Brand palette from the Srinishtha logo */
-  --color-brand-orange: #ff8b26;
-  --color-brand-pink: #e54b7a;
-  --color-brand-purple: #8a3fd1;
-  --color-brand-cyan: #39c4d6;
-  --color-brand-gold: #c99a0a;
+  --color-line: #dfe3e7;
+  --color-line-dark: #2c3a48;
+  --color-accent: #b66a20;
+  /* Amber text on light surfaces (4.5:1+ on warm white); also the hover state of amber buttons */
+  --color-accent-strong: #9a5717;
+  --color-accent-soft: #f8ecdc;
+  /* Champagne gold: on charcoal only (too light for text on white) */
+  --color-accent-bright: #e8b46a;
+  --color-gold: #e8b46a;
   --color-danger: #b42318;
   --color-success: #1f7a4d;
 
-  --text-display: clamp(2.25rem, 1.5rem + 2.8vw, 4rem);
-  --text-display--line-height: 1.04;
-  --text-display--letter-spacing: -0.032em;
-  --text-headline: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+  /* Kept for admin status chips only; the public site does not use them */
+  --color-brand-orange: #c2701d;
+  --color-brand-purple: #5b4fb3;
+  --color-brand-cyan: #1e8ca0;
+
+  --text-display: clamp(2.5rem, 1.55rem + 3.6vw, 4.75rem);
+  --text-display--line-height: 1.03;
+  --text-display--letter-spacing: -0.035em;
+  --text-title: clamp(2.125rem, 1.6rem + 2vw, 3.5rem);
+  --text-title--line-height: 1.06;
+  --text-title--letter-spacing: -0.03em;
+  --text-headline: clamp(1.875rem, 1.45rem + 1.5vw, 2.75rem);
   --text-headline--line-height: 1.1;
   --text-headline--letter-spacing: -0.025em;
+  --text-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-lede--line-height: 1.65;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -40,10 +51,11 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6rem;
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-white font-sans text-body;
+    @apply bg-canvas font-sans text-body;
     font-feature-settings: "cv11", "ss01";
   }
   h1, h2, h3, h4 {
@@ -58,23 +70,28 @@
     outline-offset: 3px;
   }
   ::selection {
-    background: var(--color-accent-soft);
+    background: var(--color-gold);
     color: var(--color-ink);
   }
 }
 
 @layer utilities {
+  /* Admin chrome accent bar (public site uses no gradients) */
   .bg-brand-gradient {
-    background-image: linear-gradient(120deg, var(--color-brand-orange), var(--color-brand-pink) 50%, var(--color-brand-purple));
-  }
-  .text-brand-gradient {
-    background-image: linear-gradient(120deg, var(--color-brand-orange), var(--color-brand-pink) 55%, var(--color-brand-purple));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    background: var(--color-accent);
   }
   .reveal {
-    animation: reveal 600ms var(--ease-out-soft) both;
+    animation: reveal 800ms var(--ease-out-soft) both;
+  }
+  /* Faint engineering grid used on navy surfaces */
+  .bg-blueprint {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .logo-white {
+    filter: brightness(0) invert(1);
   }
 }
 
@@ -82,8 +99,8 @@
    is never hidden if scripts fail. Elements opt in with data-reveal. */
 .reveal-ready [data-reveal] {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 600ms var(--ease-out-soft), transform 600ms var(--ease-out-soft);
+  transform: translateY(20px);
+  transition: opacity 700ms var(--ease-out-soft), transform 700ms var(--ease-out-soft);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal-ready [data-reveal].is-visible {
@@ -91,28 +108,121 @@
   transform: none;
 }
 
-@keyframes sheet-up {
-  from { transform: translateY(16px); opacity: 0; }
-  to { transform: none; opacity: 1; }
-}
-
-.sheet-up {
-  animation: sheet-up 250ms var(--ease-out-soft) both;
-}
-
 @keyframes reveal {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: none; }
 }
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.panel-in {
+  animation: panel-in 180ms var(--ease-out-soft) both;
+}
+
+/* ---------- Hero animation ---------- */
+
+/* Headline lines rise out of a mask, one after another */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.hero-line > span {
+  display: inline-block;
+  animation: hero-rise 1000ms var(--ease-out-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes hero-rise {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+
+/* Globe: the canvas fades in over a warm ambient glow (also the fallback without canvas) */
+.hero-ambient {
+  background:
+    radial-gradient(60% 70% at 74% 52%, rgba(182, 106, 32, 0.16), transparent 70%),
+    radial-gradient(40% 40% at 58% 18%, rgba(232, 180, 106, 0.10), transparent 70%);
+}
+@media (max-width: 1023px) {
+  .hero-ambient {
+    background: radial-gradient(90% 45% at 50% 100%, rgba(182, 106, 32, 0.22), transparent 75%);
+  }
+}
+.globe-canvas {
+  animation: fade-in 1200ms ease-out both;
+}
+/* Stage 3 labels appear once the connections have drawn in, then drift gently */
+.globe-label {
+  animation:
+    globe-label 900ms var(--ease-out-soft) var(--d, 2600ms) both,
+    globe-float 5s ease-in-out calc(var(--d, 2600ms) + 900ms) infinite alternate;
+}
+@keyframes globe-float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-7px); }
+}
+@keyframes globe-label {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Client logo marquee: edges fade out, rows loop seamlessly, hovering pauses */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .marquee {
+    mask-image: none;
+  }
+  .marquee-track {
+    width: 100%;
+    animation: none;
+  }
+  .marquee-copy {
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 1.5rem;
+  }
+  .marquee-dup {
+    display: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
   .reveal-ready [data-reveal] {
     opacity: 1;
     transform: none;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

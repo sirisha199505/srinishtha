@@ -24,7 +24,7 @@ export default function Solutions() {
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'Services', to: '/capabilities' }, { label: 'Solutions' }]} />
       <Section>
         <ProblemRows rows={rows} />
       </Section>

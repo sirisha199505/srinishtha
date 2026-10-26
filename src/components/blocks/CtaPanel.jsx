@@ -1,17 +1,22 @@
 import { CtaPair } from '../ui/Button'
-import { Container } from '../ui/Layout'
+import { Container, Highlighted } from '../ui/Layout'
 
-// Closing call-to-action used at the end of every page.
-export function CtaPanel({ question, lede, cta }) {
+// Closing call-to-action used at the end of every page; `highlight` sets one phrase in gold.
+export function CtaPanel({ question, highlight, lede, cta, children }) {
   return (
-    <section className="bg-ink bg-[radial-gradient(ellipse_at_top_left,rgba(229,75,122,0.25),transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(138,63,209,0.35),transparent_55%)] py-10 sm:py-14">
+    <section className="relative isolate overflow-hidden bg-navy bg-blueprint py-20 sm:py-28">
+      <div aria-hidden="true" className="absolute top-1/2 -right-40 -z-10 size-[34rem] -translate-y-1/2 rounded-full border border-white/10" />
+      <div aria-hidden="true" className="absolute top-1/2 -right-16 -z-10 size-[22rem] -translate-y-1/2 rounded-full border border-gold/30" />
+      <div aria-hidden="true" className="absolute top-1/2 right-0 -z-20 size-[40rem] translate-x-1/3 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(182,106,32,0.18),transparent)]" />
       <Container>
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-8">
-            <h2 className="text-headline font-semibold text-white">{question}</h2>
-            {lede && <p className="mt-4 max-w-2xl text-[1.0625rem] leading-relaxed text-muted-dark">{lede}</p>}
-          </div>
-          <CtaPair cta={cta} inverse className="lg:col-span-4 lg:flex-col lg:items-stretch" />
+        <div data-reveal className="max-w-3xl">
+          <span aria-hidden="true" className="mb-8 block h-0.5 w-12 bg-gold" />
+          <h2 className="text-title font-semibold text-white">
+            <Highlighted text={question} highlight={highlight} inverse />
+          </h2>
+          {lede && <p className="mt-6 max-w-2xl text-lede text-muted-dark">{lede}</p>}
+          <CtaPair cta={cta} inverse className="mt-10" />
+          {children}
         </div>
       </Container>
     </section>

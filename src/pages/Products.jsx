@@ -11,11 +11,11 @@ export default function Products() {
   const { products } = site
   return (
     <>
-      <PageHeader eyebrow={products.eyebrow} heading={products.title} lede={products.lede} />
+      <PageHeader crumbs={[{ label: 'Our Work', to: '/work' }, { label: 'Srinishtha Labs' }]} eyebrow={products.eyebrow} heading={products.title} lede={products.lede} />
       <Section>
-        <div className="space-y-10">
-          {products.items.map((p) => (
-            <ProductRow key={p.name} product={p} storyLabel={site.labels.products.caseStudy} />
+        <div className="space-y-16 sm:space-y-20">
+          {products.items.map((p, i) => (
+            <ProductRow key={p.name} product={p} index={i} storyLabel={site.labels.products.caseStudy} />
           ))}
         </div>
       </Section>

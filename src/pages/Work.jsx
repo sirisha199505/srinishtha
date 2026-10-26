@@ -17,21 +17,21 @@ export default function Work() {
 
   return (
     <>
-      <PageHeader {...meta} />
+      <PageHeader {...meta} crumbs={[{ label: 'Our Work' }]} />
       <Section>
         <h2 className="sr-only">{labels.flagship}</h2>
-        <div className="space-y-10">
-          {flagship.map((s) => (
-            <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} feature />
+        <div className="space-y-20 sm:space-y-24">
+          {flagship.map((s, i) => (
+            <CaseStudyCard key={s.slug} study={s} industry={industryOf(s.industry)} feature index={i} />
           ))}
         </div>
       </Section>
       <Section tone="paper">
-        <SectionHeading title={labels.more} />
+        <SectionHeading eyebrow="Case studies" title={labels.more} />
         <CaseStudyGrid studies={others} industryOf={industryOf} />
       </Section>
-      <Section>
-        <SectionHeading title={labels.archive} lede={labels.archiveLede} />
+      <Section id="archive">
+        <SectionHeading eyebrow="Archive" title={labels.archive} lede={labels.archiveLede} />
         <ProjectArchive projects={site.projects} />
       </Section>
       <ClosingCta ctaKey="caseStudy" />

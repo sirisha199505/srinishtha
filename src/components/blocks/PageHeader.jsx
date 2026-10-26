@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom'
+import { cx } from '../../lib/cx'
 import { Container, Eyebrow } from '../ui/Layout'
 
-export function Breadcrumbs({ items }) {
+export function Breadcrumbs({ items, inverse = false }) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex flex-wrap items-center gap-2 text-sm text-muted">
-        {items.map((item, i) => (
+    <nav aria-label="Breadcrumb" className="mb-8">
+      <ol className={cx('flex flex-wrap items-center gap-2 text-sm', inverse ? 'text-muted-dark' : 'text-muted')}>
+        <li className="flex items-center gap-2">
+          <Link to="/" className={inverse ? 'hover:text-white' : 'hover:text-ink'}>Home</Link>
+        </li>
+        {items.map((item) => (
           <li key={item.label} className="flex items-center gap-2">
-            {i > 0 && <span aria-hidden="true">/</span>}
+            <span aria-hidden="true">/</span>
             {item.to ? (
-              <Link to={item.to} className="hover:text-ink">
+              <Link to={item.to} className={inverse ? 'hover:text-white' : 'hover:text-ink'}>
                 {item.label}
               </Link>
             ) : (
-              <span aria-current="page" className="text-ink">
+              <span aria-current="page" className={inverse ? 'text-white' : 'text-ink'}>
                 {item.label}
               </span>
             )}
@@ -24,20 +28,25 @@ export function Breadcrumbs({ items }) {
   )
 }
 
-// Standard header for every inner page.
-export function PageHeader({ eyebrow, heading, lede, crumbs, children }) {
+// Standard header for every inner page: navy band with a blueprint grid, one clear H1.
+export function PageHeader({ eyebrow, heading, lede, crumbs, children, tone = 'navy' }) {
+  const inverse = tone === 'navy'
   return (
-    <header className="border-b border-line bg-paper bg-[radial-gradient(ellipse_at_top_right,rgba(255,139,38,0.10),transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(138,63,209,0.10),transparent_50%)] pt-24 pb-8 sm:pt-28 sm:pb-10">
+    <header className={cx('relative isolate overflow-hidden pt-[calc(68px+3.5rem)] pb-14 sm:pb-20 lg:pt-[calc(76px+5rem)]', inverse ? 'bg-navy bg-blueprint' : 'border-b border-line bg-paper')}>
+      {inverse && (
+        <>
+          <div aria-hidden="true" className="absolute -top-24 -right-32 -z-10 size-[30rem] rounded-full border border-white/10" />
+          <div aria-hidden="true" className="absolute top-10 -right-10 -z-10 size-[18rem] rounded-full border border-accent-bright/20" />
+        </>
+      )}
       <Container>
-        {crumbs && <Breadcrumbs items={crumbs} />}
-        <div className="grid gap-5 lg:grid-cols-12">
-          <div className="lg:col-span-8">
-            <Eyebrow>{eyebrow}</Eyebrow>
-            <h1 className="reveal mt-4 text-display font-semibold">{heading}</h1>
-          </div>
-          {lede && <p className="text-lg leading-relaxed text-muted lg:col-span-7">{lede}</p>}
+        {crumbs && <Breadcrumbs items={crumbs} inverse={inverse} />}
+        <div className="max-w-4xl">
+          <Eyebrow inverse={inverse} className="reveal">{eyebrow}</Eyebrow>
+          <h1 className={cx('reveal mt-5 text-title font-semibold [animation-delay:80ms]', inverse && 'text-white')}>{heading}</h1>
+          {lede && <p className={cx('reveal mt-6 max-w-3xl text-lede [animation-delay:160ms]', inverse ? 'text-muted-dark' : 'text-muted')}>{lede}</p>}
         </div>
-        {children && <div className="mt-8">{children}</div>}
+        {children && <div className="reveal mt-10 [animation-delay:240ms]">{children}</div>}
       </Container>
     </header>
   )

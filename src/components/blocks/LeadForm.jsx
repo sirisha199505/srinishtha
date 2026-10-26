@@ -9,7 +9,7 @@ export function LeadForm({ form, responseTime, initialInterest }) {
 
   if (status === 'success') {
     return (
-      <div role="status" className="rounded-lg border border-line bg-paper p-8 sm:p-10">
+      <div role="status" className="border border-line bg-paper p-8 sm:p-10">
         <span className="flex size-10 items-center justify-center rounded-full bg-success/10 text-success">
           <Check className="size-5" />
         </span>
@@ -75,7 +75,7 @@ export function LeadForm({ form, responseTime, initialInterest }) {
       </div>
 
       {status === 'error' && (
-        <p role="alert" className="rounded-md border border-danger/30 bg-danger/5 px-4 py-3 text-sm text-danger">
+        <p role="alert" className="rounded-[3px] border border-danger/30 bg-danger/5 px-4 py-3 text-sm text-danger">
           We could not send your message. Please check the highlighted fields, or email us directly.
         </p>
       )}

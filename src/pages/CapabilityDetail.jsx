@@ -28,9 +28,9 @@ function CapabilityPage({ capability }) {
         eyebrow={labels.eyebrow}
         heading={capability.headline}
         lede={capability.summary}
-        crumbs={[{ label: labels.all, to: '/capabilities' }, { label: capability.title }]}
+        crumbs={[{ label: 'Services', to: '/capabilities' }, { label: capability.title }]}
       >
-        <CtaPair cta={ctaFor(site, capability.cta)} />
+        <CtaPair cta={ctaFor(site, capability.cta)} inverse />
       </PageHeader>
 
       <Section>

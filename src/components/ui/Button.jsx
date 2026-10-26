@@ -4,14 +4,14 @@ import { SmartLink } from './SmartLink'
 import { ArrowRight } from './Icons'
 
 const VARIANTS = {
-  primary: 'bg-brand-gradient text-white shadow-[0_10px_24px_-10px_rgba(229,75,122,0.6)] hover:brightness-110',
-  inverse: 'bg-white text-ink hover:bg-paper',
-  outline: 'border border-accent/30 text-accent hover:border-accent hover:bg-accent-soft',
-  'outline-inverse': 'border border-white/30 text-white hover:border-white',
+  primary: 'bg-accent text-white hover:bg-accent-strong',
+  inverse: 'bg-canvas text-navy hover:bg-accent-soft',
+  outline: 'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-white',
+  'outline-inverse': 'border border-white/40 text-white hover:border-gold hover:text-gold',
 }
 
 const BASE =
-  'group inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-[0.9375rem] font-medium transition-colors duration-300'
+  'group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-[3px] px-6 text-[0.9375rem] font-semibold tracking-[-0.005em] transition-colors duration-200'
 
 // Renders as a link when given `to`/`href`, otherwise as a <button>.
 export function Button({ to, href, variant = 'primary', arrow = false, children, className, onClick, ...rest }) {
@@ -19,7 +19,7 @@ export function Button({ to, href, variant = 'primary', arrow = false, children,
   const content = (
     <>
       {children}
-      {arrow && <ArrowRight className="size-4" />}
+      {arrow && <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />}
     </>
   )
 
@@ -41,13 +41,31 @@ export function Button({ to, href, variant = 'primary', arrow = false, children,
   )
 }
 
+// Quiet text link with an arrow, for "view all" actions: { label, to }.
+export function TextLink({ to, href, children, inverse = false, className }) {
+  return (
+    <SmartLink
+      to={to}
+      href={href}
+      className={cx(
+        'group inline-flex items-center gap-2 text-[0.9375rem] font-semibold',
+        inverse ? 'text-white hover:text-accent-bright' : 'text-accent-strong hover:text-ink',
+        className,
+      )}
+    >
+      <span className="border-b border-current/30 pb-0.5 transition-colors group-hover:border-current">{children}</span>
+      <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+    </SmartLink>
+  )
+}
+
 // Secondary "see more" link for section headings: { label, to }.
-export function MoreLink({ link }) {
+export function MoreLink({ link, inverse = false }) {
   if (!link) return null
   return (
-    <Button to={link.to} variant="outline" arrow className="self-start">
+    <TextLink to={link.to} inverse={inverse}>
       {link.label}
-    </Button>
+    </TextLink>
   )
 }
 
@@ -55,7 +73,7 @@ export function MoreLink({ link }) {
 export function CtaPair({ cta, inverse = false, className }) {
   if (!cta) return null
   return (
-    <div className={cx('flex flex-col gap-3 sm:flex-row', className)}>
+    <div className={cx('flex flex-col gap-3 sm:flex-row sm:flex-wrap', className)}>
       {cta.primary && (
         <Button to={cta.primary.to} href={cta.primary.href} arrow>
           {cta.primary.label}

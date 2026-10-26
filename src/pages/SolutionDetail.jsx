@@ -28,18 +28,18 @@ function SolutionPage({ solution }) {
         eyebrow={capability ? `${l.eyebrow} · ${capability.title}` : l.eyebrow}
         heading={solution.headline}
         lede={solution.lede}
-        crumbs={[{ label: l.all, to: '/solutions' }, { label: solution.title }]}
+        crumbs={[{ label: 'Services', to: '/capabilities' }, { label: l.all, to: '/solutions' }, { label: solution.title }]}
       >
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mb-3 text-sm font-medium text-ink">{l.problems}</p>
+            <p className="mb-3 text-xs font-semibold tracking-[0.14em] text-accent-bright uppercase">{l.problems}</p>
             <ul className="flex flex-wrap gap-2">
               {solution.problems.map((p) => (
-                <li key={p}><Tag>{p}</Tag></li>
+                <li key={p}><Tag inverse>{p}</Tag></li>
               ))}
             </ul>
           </div>
-          <CtaPair cta={ctaFor(site, solution.cta)} />
+          <CtaPair cta={ctaFor(site, solution.cta)} inverse />
         </div>
       </PageHeader>
 
