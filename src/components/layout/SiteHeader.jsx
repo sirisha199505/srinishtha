@@ -7,7 +7,7 @@ import { useScrolled } from '../../hooks/useScrolled'
 import { cx } from '../../lib/cx'
 import { Button, TextLink } from '../ui/Button'
 import { Container } from '../ui/Layout'
-import { ChevronDown, Close, Menu, NamedIcon } from '../ui/Icons'
+import { ChevronDown, NamedIcon } from '../ui/Icons'
 
 const isActive = (item, pathname) =>
   item.to === '/' ? pathname === '/' : (item.match || [item.to]).some((p) => pathname.startsWith(p))
@@ -140,101 +140,18 @@ function DesktopNav({ nav, menus, pathname }) {
   )
 }
 
-function MobileMenu({ nav, menus, cta, company, onClose, pathname }) {
-  const [expanded, setExpanded] = useState(() => nav.find((n) => n.menu && isActive(n, pathname))?.menu || null)
-  const panelRef = useRef(null)
-
-  useEffect(() => {
-    panelRef.current?.querySelector('a, button')?.focus()
-  }, [])
-
-  return (
-    <div id="mobile-menu" ref={panelRef} className="fixed inset-x-0 top-[68px] bottom-0 z-40 flex flex-col overflow-y-auto border-t border-line bg-canvas lg:hidden" style={{ animation: 'fade-in 200ms ease-out both' }}>
-      <nav aria-label="Mobile" className="flex-1 px-5 pt-2 pb-6 sm:px-8">
-        <ul className="divide-y divide-line">
-          {nav.map((item) => (
-            <li key={item.label}>
-              {item.menu ? (
-                <>
-                  <button
-                    type="button"
-                    aria-expanded={expanded === item.menu}
-                    onClick={() => setExpanded(expanded === item.menu ? null : item.menu)}
-                    className={cx('flex min-h-14 w-full items-center justify-between text-left text-lg font-semibold', isActive(item, pathname) ? 'text-accent-strong' : 'text-ink')}
-                  >
-                    {item.label}
-                    <ChevronDown className={cx('size-5 text-muted transition-transform duration-200', expanded === item.menu && 'rotate-180')} />
-                  </button>
-                  {expanded === item.menu && (
-                    <div className="pb-4">
-                      <Link to={item.to} onClick={onClose} className="block py-2.5 text-[0.9375rem] font-semibold text-accent-strong">
-                        {item.label} overview
-                      </Link>
-                      <ul>
-                        {(item.menu === 'services' ? menus.services : menus[item.menu]).map((sub) => (
-                          <li key={sub.to + sub.label}>
-                            <Link to={sub.to} onClick={onClose} className="block py-2.5 text-[0.9375rem] text-body">
-                              {sub.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <NavLink to={item.to} end={item.to === '/'} onClick={onClose} className={cx('flex min-h-14 items-center text-lg font-semibold', isActive(item, pathname) ? 'text-accent-strong' : 'text-ink')}>
-                  {item.label}
-                </NavLink>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="border-t border-line bg-paper px-5 py-6 sm:px-8">
-        <Button to={cta.to} arrow className="w-full" onClick={onClose}>
-          {cta.label}
-        </Button>
-        <p className="mt-4 text-center text-sm text-muted">
-          <a href={`mailto:${company.email}`} className="hover:text-ink">{company.email}</a>
-          <span aria-hidden="true" className="mx-2">·</span>
-          <a href={company.phoneHref} className="hover:text-ink">{company.phone}</a>
-        </p>
-      </div>
-    </div>
-  )
-}
-
 // `menus` maps a nav item's `menu` key to its dropdown items (see buildMenus).
+// Phones and tablets navigate with MobileTabBar at the bottom of the screen, so the header
+// carries only the logo and the "Let's Talk" call to action there.
 export function SiteHeader({ company, nav, menus, cta }) {
   const scrolled = useScrolled(8)
   const { pathname } = useLocation()
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const toggleRef = useRef(null)
-
-  useEffect(() => setMobileOpen(false), [pathname])
-  useEffect(() => {
-    if (!mobileOpen) return
-    const onKey = (e) => {
-      if (e.key !== 'Escape') return
-      setMobileOpen(false)
-      toggleRef.current?.focus()
-    }
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.body.style.overflow = prev
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [mobileOpen])
 
   return (
-    <>
     <header
       className={cx(
         'fixed inset-x-0 top-0 z-50 border-b bg-canvas transition-[border-color,box-shadow] duration-300',
-        scrolled || mobileOpen ? 'border-line shadow-[0_10px_30px_-22px_rgba(23,33,43,0.45)]' : 'border-transparent',
+        scrolled ? 'border-line shadow-[0_10px_30px_-22px_rgba(23,33,43,0.45)]' : 'border-transparent',
       )}
     >
       <Container className="flex h-[68px] items-center justify-between gap-6 lg:h-[76px]">
@@ -244,29 +161,11 @@ export function SiteHeader({ company, nav, menus, cta }) {
 
         <DesktopNav nav={nav} menus={menus} pathname={pathname} />
 
-        <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <Button to={cta.to} arrow className="min-h-11 px-5 text-sm">
-              {cta.label}
-            </Button>
-          </div>
-          <button
-            ref={toggleRef}
-            type="button"
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setMobileOpen((v) => !v)}
-            className="-mr-2 flex size-11 items-center justify-center rounded-[3px] text-ink hover:bg-paper lg:hidden"
-          >
-            {mobileOpen ? <Close className="size-6" /> : <Menu className="size-6" />}
-          </button>
-        </div>
+        <Button to={cta.to} arrow className="min-h-10 px-4 text-sm sm:min-h-11 sm:px-5">
+          {cta.label}
+        </Button>
       </Container>
     </header>
-    {/* Sibling of the header, so the fixed panel is positioned against the viewport */}
-    {mobileOpen && <MobileMenu nav={nav} menus={menus} cta={cta} company={company} pathname={pathname} onClose={() => setMobileOpen(false)} />}
-    </>
   )
 }
 

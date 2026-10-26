@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useSite } from '../../content/SiteProvider'
 import { HEADER_CTA, NAV } from '../../content/siteConfig'
 import { useReveal } from '../../hooks/useReveal'
+import { MobileTabBar } from './MobileTabBar'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader, buildMenus } from './SiteHeader'
 
@@ -23,13 +24,14 @@ export function AppShell() {
   const mainRef = useRef(null)
   useScrollRestoration()
   useReveal(mainRef)
+  const menus = buildMenus(site)
 
   return (
     <>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-[3px] focus:bg-white focus:px-4 focus:py-2 focus:text-ink">
         Skip to content
       </a>
-      <SiteHeader company={site.company} nav={NAV} menus={buildMenus(site)} cta={HEADER_CTA} />
+      <SiteHeader company={site.company} nav={NAV} menus={menus} cta={HEADER_CTA} />
       <main id="main" ref={mainRef}>
         {/* Only the page content waits for its code; the header stays mounted */}
         <Suspense fallback={<div className="min-h-screen" />}>
@@ -37,6 +39,9 @@ export function AppShell() {
         </Suspense>
       </main>
       <SiteFooter company={site.company} industries={site.industries} legal={site.navigation.legal} />
+      {/* Keeps the end of the footer clear of the fixed tab bar on phones and tablets */}
+      <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-bottom))] bg-navy-2 lg:hidden" />
+      <MobileTabBar nav={NAV} menus={menus} />
     </>
   )
 }

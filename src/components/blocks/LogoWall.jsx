@@ -25,7 +25,7 @@ function MarqueeRow({ clients, reverse = false, duration }) {
   const copy = (hidden) => (
     <ul aria-hidden={hidden || undefined} className={cx('marquee-copy flex shrink-0 items-center', hidden && 'marquee-dup')}>
       {clients.map((c) => (
-        <li key={c.name} title={hidden ? undefined : c.name} className={cx(ITEM, 'px-6 sm:px-9')}>
+        <li key={c.name} title={hidden ? undefined : c.name} className={cx(ITEM, 'px-5 sm:px-9')}>
           <LogoMark client={c} />
         </li>
       ))}
@@ -39,14 +39,30 @@ function MarqueeRow({ clients, reverse = false, duration }) {
   )
 }
 
-// `marquee`: two rows drifting in opposite directions (paused on hover).
+// Splits the list into `count` rows of near-equal length.
+const rows = (list, count) => {
+  const size = Math.ceil(list.length / count)
+  return Array.from({ length: count }, (_, i) => list.slice(i * size, (i + 1) * size)).filter((r) => r.length)
+}
+
+// Rows of logos drifting in alternating directions (paused on hover): three shorter rows on
+// phones, two on wider screens.
+function Marquee({ clients, count, className }) {
+  return (
+    <div className={cx('space-y-5 sm:space-y-8', className)}>
+      {rows(clients, count).map((row, i) => (
+        <MarqueeRow key={i} clients={row} duration={30 + i * 5} reverse={i % 2 === 1} />
+      ))}
+    </div>
+  )
+}
+
 export function LogoWall({ clients, label, marquee = false, className }) {
   if (marquee) {
-    const half = Math.ceil(clients.length / 2)
     return (
-      <div data-reveal className={cx('marquee space-y-6 sm:space-y-8', className)}>
-        <MarqueeRow clients={clients.slice(0, half)} duration={38} />
-        <MarqueeRow clients={clients.slice(half)} duration={44} reverse />
+      <div data-reveal className={cx('marquee', className)}>
+        <Marquee clients={clients} count={3} className="sm:hidden" />
+        <Marquee clients={clients} count={2} className="hidden sm:block" />
       </div>
     )
   }

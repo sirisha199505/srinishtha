@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <>
       {/* 1 · Hero */}
-      <HomeHero hero={HERO} stats={site.stats} nextId="clients" />
+      <HomeHero hero={HERO} stats={site.stats} />
 
       {/* 2 · Clients */}
       <section id="clients" aria-labelledby="clients-title" className="border-b border-line bg-white py-12 sm:py-14">

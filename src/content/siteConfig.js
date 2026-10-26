@@ -2,12 +2,13 @@
 // Page copy for inner pages still comes from GET /api/site.
 
 // `menu` names a dropdown built in SiteHeader (buildMenus) from content + these lists.
+// `short` is the label used in the phone tab bar.
 export const NAV = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/capabilities', menu: 'services', match: ['/capabilities', '/solutions'] },
   { label: 'Industries', to: '/industries' },
   { label: 'Our Work', to: '/work', menu: 'work', match: ['/work', '/products'] },
-  { label: 'About Us', to: '/about', menu: 'about', match: ['/about', '/leadership', '/how-we-work', '/security', '/careers', '/life'] },
+  { label: 'About Us', short: 'About', to: '/about', menu: 'about', match: ['/about', '/leadership', '/how-we-work', '/security', '/careers', '/life'] },
   { label: 'Contact', to: '/contact' },
 ]
 

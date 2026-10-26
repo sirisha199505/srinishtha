@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Desktop windows that are short (laptops with browser chrome): tighter vertical rhythm */
+@custom-variant short (@media (min-width: 1024px) and (max-height: 820px));
+
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -126,7 +129,24 @@
   animation: panel-in 180ms var(--ease-out-soft) both;
 }
 
+/* Mobile tab bar sheets slide up from the bar */
+@keyframes sheet-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.sheet-up {
+  animation: sheet-up 240ms var(--ease-out-soft) both;
+}
+
 /* ---------- Hero animation ---------- */
+
+/* Hero headline scales with the window height as well as width, so the headline and CTAs
+   fit above the fold on short laptop screens */
+.hero-title {
+  font-size: clamp(2.5rem, min(1.55rem + 3.6vw, 9svh), 4.75rem);
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+}
 
 /* Headline lines rise out of a mask, one after another */
 .hero-line {
