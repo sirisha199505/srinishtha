@@ -161,7 +161,7 @@ export function SiteHeader({ company, nav, menus, cta }) {
 
         <DesktopNav nav={nav} menus={menus} pathname={pathname} />
 
-        <Button to={cta.to} arrow className="min-h-10 px-4 text-sm sm:min-h-11 sm:px-5">
+        <Button to={cta.to} arrow magnetic className="min-h-10 px-4 text-sm sm:min-h-11 sm:px-5">
           {cta.label}
         </Button>
       </Container>

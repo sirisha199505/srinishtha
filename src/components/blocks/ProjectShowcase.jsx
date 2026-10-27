@@ -57,8 +57,10 @@ function ProjectTile({ project }) {
     : { as: 'a', href: project.url, target: '_blank', rel: 'noopener noreferrer', onClick: () => track('outbound_client_link', { client: project.client }) }
   const { as: Tag, ...linkProps } = props
   const Icon = internal ? ArrowRight : ArrowUpRight
+  // Only a card that leads somewhere gets the "View project" cursor and the spotlight.
+  const live = internal || Boolean(project.url)
   return (
-    <Tag {...linkProps} className="group block">
+    <Tag {...linkProps} data-cursor-label={live ? 'View project' : undefined} data-spotlight={live ? 'light' : undefined} className="group relative block rounded-[4px]">
       <ScreenFrame src={project.screenshot} alt="" url={project.url} device={project.device} className="transition-transform duration-500 group-hover:-translate-y-1" />
       <p className="mt-4 flex items-center justify-between gap-3">
         <span className="font-semibold text-ink group-hover:text-accent-strong">{project.client}</span>

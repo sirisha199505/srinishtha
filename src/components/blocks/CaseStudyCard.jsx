@@ -24,6 +24,9 @@ export function CaseVisual({ study, industry, wide = false, className }) {
   )
 }
 
+// "View project" cursor and spotlight for a card's visual (a dark glow on the navy panel).
+const cardPointer = (study) => ({ 'data-cursor-label': 'View project', 'data-spotlight': study.screenshot ? 'light' : 'dark' })
+
 function Meta({ study, industry }) {
   return (
     <p className="text-xs font-semibold tracking-[0.12em] text-muted uppercase">
@@ -39,7 +42,7 @@ export function CaseStudyCard({ study, industry, feature = false, index = 0 }) {
   if (feature) {
     return (
       <article data-reveal className="group grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-14">
-        <Link to={to} className={cx('block lg:col-span-7', index % 2 && 'lg:order-2')} tabIndex={-1} aria-hidden="true">
+        <Link to={to} {...cardPointer(study)} className={cx('relative block rounded-[4px] lg:col-span-7', index % 2 && 'lg:order-2')} tabIndex={-1} aria-hidden="true">
           <CaseVisual study={study} industry={industry} className="transition-transform duration-500 group-hover:-translate-y-1" />
         </Link>
         <div className="lg:col-span-5">
@@ -67,7 +70,7 @@ export function CaseStudyCard({ study, industry, feature = false, index = 0 }) {
 
   return (
     <article data-reveal style={revealDelay(index)} className="group flex flex-col">
-      <Link to={to} className="block" tabIndex={-1} aria-hidden="true">
+      <Link to={to} {...cardPointer(study)} className="relative block rounded-[4px]" tabIndex={-1} aria-hidden="true">
         <CaseVisual study={study} industry={industry} className="transition-transform duration-500 group-hover:-translate-y-1" />
       </Link>
       <div className="mt-5">

@@ -6,6 +6,7 @@ import { useReveal } from '../../hooks/useReveal'
 import { MobileTabBar } from './MobileTabBar'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader, buildMenus } from './SiteHeader'
+import { PointerEffects } from '../ui/PointerEffects'
 
 function useScrollRestoration() {
   const { pathname, hash } = useLocation()
@@ -42,6 +43,7 @@ export function AppShell() {
       {/* Keeps the end of the footer clear of the fixed tab bar on phones and tablets */}
       <div aria-hidden="true" className="h-[calc(4rem+env(safe-area-inset-bottom))] bg-navy-2 lg:hidden" />
       <MobileTabBar nav={NAV} menus={menus} />
+      <PointerEffects />
     </>
   )
 }

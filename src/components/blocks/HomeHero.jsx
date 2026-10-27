@@ -34,7 +34,7 @@ function HeroStats({ stats }) {
 
 export function HomeHero({ hero, stats }) {
   return (
-    <section className="relative isolate overflow-hidden bg-navy">
+    <section data-spotlight="hero" className="relative isolate overflow-hidden bg-navy">
       <div aria-hidden="true" className="hero-ambient absolute inset-0 -z-20" />
       <ConnectedGlobe labels={hero.labels} />
       {/* Keeps the copy legible where the globe's glow reaches behind it (desktop) */}
@@ -48,7 +48,7 @@ export function HomeHero({ hero, stats }) {
           </div>
           <p className="reveal mt-7 max-w-[33rem] text-lede short:mt-4 short:text-base text-white/75 [animation-delay:600ms]">{hero.lede}</p>
           <div className="reveal mt-9 flex flex-col gap-3 short:mt-6 sm:flex-row [animation-delay:750ms]">
-            <Button to={hero.primary.to} arrow>
+            <Button to={hero.primary.to} arrow magnetic>
               {hero.primary.label}
             </Button>
             <Button to={hero.secondary.to} variant="outline-inverse">

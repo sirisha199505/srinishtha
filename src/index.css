@@ -617,3 +617,84 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Project cursor (PointerEffects): a small dark chip with a cyan accent that trails the
+   pointer over project cards. Never takes pointer events, so clicks and selection pass through. */
+.cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+.cursor-label-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 18px 0 0 18px;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid rgb(57 196 214 / 0.45);
+  border-radius: 999px;
+  background: rgb(14 11 31 / 0.92);
+  box-shadow: 0 12px 30px -14px rgb(57 196 214 / 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: top left;
+  transition:
+    opacity 200ms ease-out,
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cursor-label.is-visible .cursor-label-chip {
+  opacity: 1;
+  transform: none;
+}
+.cursor-label-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-brand-cyan);
+  box-shadow: 0 0 8px var(--color-brand-cyan);
+}
+
+/* Cursor spotlight (PointerEffects sets --sx/--sy): a soft radial glow under the pointer.
+   Cyan on dark surfaces, a faint brand purple on light ones; the hero's sits behind its copy. */
+[data-spotlight] {
+  --spot: rgb(138 63 209 / 0.12);
+  --spot-size: 340px;
+}
+[data-spotlight='dark'] {
+  --spot: rgb(57 196 214 / 0.22);
+}
+[data-spotlight='hero'] {
+  --spot: rgb(57 196 214 / 0.18);
+  --spot-size: 560px;
+}
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(var(--spot-size) circle at var(--sx, 50%) var(--sy, 50%), var(--spot), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease-out;
+}
+[data-spotlight='hero']::after {
+  z-index: -1;
+}
+.has-mouse [data-spotlight]:hover::after {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-label-chip,
+  [data-spotlight]::after {
+    transition: none;
+  }
+}
