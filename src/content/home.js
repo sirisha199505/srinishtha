@@ -12,8 +12,7 @@ export const HERO = {
   // What travels along the globe's connections (wide screens). x/y are in globe radii from its centre.
   labels: [
     { icon: 'code', label: 'Software systems', x: -0.5, y: -0.5 },
-    { icon: 'cloud', label: 'Cloud infrastructure', x: 0.05, y: -0.82 },
-    { icon: 'database', label: 'Data & AI', x: 0.78, y: -0.92, align: 'right' },
+    { icon: 'database', label: 'Data & AI', x: 0.05, y: -0.82 },
     { icon: 'building', label: 'Business operations', x: 0.78, y: -0.3, align: 'right' },
     { icon: 'network', label: 'Connected industries', x: 0.74, y: 0.5, align: 'right' },
   ],

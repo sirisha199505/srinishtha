@@ -71,7 +71,7 @@ const INDIA = [
 const inIndia = (lon, lat) => {
   let inside = false
   for (let i = 0, j = INDIA.length - 1; i < INDIA.length; j = i++) {
-    const [xi, yi] = INDIA[i], [xj, yj] = INDIA[j]
+    const xi = INDIA[i][0], yi = INDIA[i][1], xj = INDIA[j][0], yj = INDIA[j][1]
     if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
   }
   return inside
@@ -99,12 +99,21 @@ function decodeLand(thin) {
     const lat = 90 - LAND.step / 2 - r * LAND.step
     // Keep dot spacing even on the sphere: fewer columns toward the poles.
     const stride = Math.max(1, Math.round(1 / Math.cos(lat * DEG))) * thin
-    for (let c = 0; c < LAND.cols; c++) {
+    if (thin > 1 && r % thin) continue
+    for (let c = 0; c < LAND.cols; c += stride) {
       const i = r * LAND.cols + c
       if (!(raw.charCodeAt(i >> 3) & (1 << (i & 7)))) continue
       const lon = -180 + LAND.step / 2 + c * LAND.step
-      if (isIndian(lat, lon)) india.push(toVec(lat, lon))
-      else if (!(thin > 1 && r % thin) && c % stride === 0) dots.push(toVec(lat, lon))
+      if (!isIndian(lat, lon)) dots.push(toVec(lat, lon))
+    }
+  }
+  // India at full density, scanning only the cells inside its bounding box
+  for (let r = Math.floor((90 - 37.5) / LAND.step); r <= Math.ceil((90 - 6) / LAND.step); r++) {
+    const lat = 90 - LAND.step / 2 - r * LAND.step
+    for (let c = Math.floor((180 + 68) / LAND.step); c <= Math.ceil((180 + 97.5) / LAND.step); c++) {
+      const i = r * LAND.cols + c
+      const lon = -180 + LAND.step / 2 + c * LAND.step
+      if (raw.charCodeAt(i >> 3) & (1 << (i & 7)) && isIndian(lat, lon)) india.push(toVec(lat, lon))
     }
   }
   return { dots, india }
