@@ -11,12 +11,15 @@ export function CaseVisual({ study, industry, wide = false, className }) {
   if (study.screenshot) {
     return <ScreenFrame src={study.screenshot} alt={`${study.client} platform`} url={study.url} device={study.device} className={className} />
   }
+  // Card panels match a ScreenFrame's height (its 28px bar + a 2:1 image) so rows line up
   return (
-    <div aria-hidden="true" className={cx('relative flex flex-col justify-between overflow-hidden rounded-[4px] bg-navy-3 bg-blueprint p-6 sm:p-8', wide ? 'aspect-[2/1] sm:aspect-[7/2] sm:p-12' : 'aspect-[2/1]', className)}>
-      <span className="text-xs font-semibold tracking-[0.14em] text-accent-bright uppercase">{industry}</span>
-      <div>
-        <p className="text-2xl leading-tight font-semibold tracking-tight text-white sm:text-3xl">{study.client}</p>
-        <p className="mt-2 text-sm text-muted-dark">{study.status}</p>
+    <div aria-hidden="true" className={cx('relative overflow-hidden rounded-[4px] bg-navy-3 bg-blueprint', !wide && 'pt-7', className)}>
+      <div className={cx('flex flex-col justify-between p-6 sm:p-8', wide ? 'aspect-[2/1] sm:aspect-[7/2] sm:p-12' : 'aspect-[2/1] pt-0 sm:pt-1')}>
+        <span className="text-xs font-semibold tracking-[0.14em] text-accent-bright uppercase">{industry}</span>
+        <div>
+          <p className="text-2xl leading-tight font-semibold tracking-tight text-white sm:text-3xl">{study.client}</p>
+          <p className="mt-2 text-sm text-muted-dark">{study.status}</p>
+        </div>
       </div>
       <span className="absolute -right-10 -bottom-10 size-40 rounded-full border border-white/10" />
       <span className="absolute -right-2 -bottom-2 size-24 rounded-full border border-accent-bright/30" />
@@ -86,9 +89,11 @@ export function CaseStudyCard({ study, industry, feature = false, index = 0 }) {
   )
 }
 
-export function CaseStudyGrid({ studies, industryOf, className }) {
+// `related`: a short "more like this" pick, so on two-column (tablet) screens an odd last card
+// is dropped rather than left alone on its row. Full listings keep every card.
+export function CaseStudyGrid({ studies, industryOf, related = false, className }) {
   return (
-    <div className={cx('grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3', className)}>
+    <div className={cx('grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3', related && 'sm:max-lg:[&>:last-child:nth-child(odd):not(:first-child)]:hidden', className)}>
       {studies.map((s, i) => (
         <CaseStudyCard key={s.slug} study={s} industry={industryOf?.(s.industry)} index={i} />
       ))}

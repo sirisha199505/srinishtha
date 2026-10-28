@@ -6,12 +6,13 @@ export function Breadcrumbs({ items, inverse = false }) {
   return (
     <nav aria-label="Breadcrumb" className="mb-8">
       <ol className={cx('flex flex-wrap items-center gap-2 text-sm', inverse ? 'text-muted-dark' : 'text-muted')}>
+        {/* Each separator trails its item, so a wrapped trail never starts a line with "/" */}
         <li className="flex items-center gap-2">
           <Link to="/" className={inverse ? 'hover:text-white' : 'hover:text-ink'}>Home</Link>
+          {items.length > 0 && <span aria-hidden="true">/</span>}
         </li>
-        {items.map((item) => (
+        {items.map((item, i) => (
           <li key={item.label} className="flex items-center gap-2">
-            <span aria-hidden="true">/</span>
             {item.to ? (
               <Link to={item.to} className={inverse ? 'hover:text-white' : 'hover:text-ink'}>
                 {item.label}
@@ -21,6 +22,7 @@ export function Breadcrumbs({ items, inverse = false }) {
                 {item.label}
               </span>
             )}
+            {i < items.length - 1 && <span aria-hidden="true">/</span>}
           </li>
         ))}
       </ol>

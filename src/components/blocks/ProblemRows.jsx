@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from '../ui/Icons'
+import { ScreenFrame } from '../ui/ScreenFrame'
 
 // Row layout for solutions and industries: name · problem/description · supporting list · link.
 // `image` (optional) adds a project screenshot beside the row.
@@ -42,7 +43,7 @@ export function ProblemRows({ rows }) {
           </div>
           {row.image && (
             <figure className="lg:col-span-4">
-              <img src={row.image.src} alt={`${row.image.caption} platform`} loading="lazy" className="aspect-[16/10] w-full rounded-[4px] border border-line object-cover object-top" />
+              <ScreenFrame src={row.image.src} alt={`${row.image.caption} platform`} />
               <figcaption className="mt-2 text-xs text-muted">{row.image.caption}</figcaption>
             </figure>
           )}

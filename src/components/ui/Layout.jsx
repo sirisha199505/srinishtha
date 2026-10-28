@@ -30,12 +30,12 @@ export function Eyebrow({ children, inverse = false, className }) {
   return (
     <p
       className={cx(
-        'flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase',
+        'flex items-start gap-3 text-xs font-semibold tracking-[0.16em] uppercase',
         inverse ? 'text-accent-bright' : 'text-accent-strong',
         className,
       )}
     >
-      <span aria-hidden="true" className="eyebrow-line h-px w-6" />
+      <span aria-hidden="true" className="eyebrow-line mt-[0.5lh] h-px w-6 shrink-0" />
       {children}
     </p>
   )
@@ -64,8 +64,9 @@ export function SectionHeading({ eyebrow, title, highlight, lede, as: Tag = 'h2'
           <Highlighted text={title} highlight={highlight} inverse={inverse} />
         </Tag>
       </div>
+      {/* A lone action (no lede) sits at the right edge rather than mid-row */}
       {(lede || action) && (
-        <div className={cx('flex flex-col items-start justify-end gap-6', split ? 'lg:col-span-5' : 'lg:col-span-9')}>
+        <div className={cx('flex flex-col items-start justify-end gap-6', !lede && 'lg:items-end', split ? 'lg:col-span-5' : 'lg:col-span-9')}>
           {lede && <p className={cx('text-lede', inverse ? 'text-muted-dark' : 'text-muted')}>{lede}</p>}
           {action}
         </div>

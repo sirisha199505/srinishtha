@@ -17,8 +17,10 @@ export function ScreenFrame({ src, alt = '', url, device = 'desktop', className,
   const [wide, setWide] = useState(false)
   if (device === 'mobile') {
     return (
-      <div className={cx('flex aspect-[2/1] items-center justify-center overflow-hidden rounded-[4px] border border-line bg-paper', className)}>
-        <div className="h-[88%] overflow-hidden rounded-[1.25rem] border-[5px] border-navy bg-white shadow-[0_18px_40px_-18px_rgba(16,36,58,0.45)]">
+      // Same outer height as the browser frame (28px bar + 2:1), with the phone centred in it
+      <div className={cx('relative overflow-hidden rounded-[4px] border border-line bg-paper', className)}>
+        <div aria-hidden="true" className="mt-7 aspect-[2/1]" />
+        <div className="absolute inset-y-[6%] left-1/2 -translate-x-1/2 overflow-hidden rounded-[1.25rem] border-[5px] border-navy bg-white shadow-[0_18px_40px_-18px_rgba(16,36,58,0.45)]">
           <img src={src} alt={alt} loading="lazy" className="h-full w-auto object-cover object-top" />
         </div>
       </div>

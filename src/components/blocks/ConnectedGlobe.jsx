@@ -6,29 +6,26 @@ const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce
 // Small screens and low-core devices get fewer dots, links and stars.
 const isLite = () => window.innerWidth < 640 || (navigator.hardwareConcurrency || 8) <= 4
 
-// Desktop: a large globe to the right of the copy, bleeding off the right and bottom edges.
-// Below lg: a horizon rising behind the bottom of the hero, so the headline and CTAs stay
-// first (HomeHero reserves that space).
-function heroLayout(w, h) {
-  if (w >= 1024) {
-    // The top of the globe always clears the 76px header; the bottom may bleed off.
-    const r = Math.min(h * 0.52, w * 0.36)
-    return { cx: w * 0.74, cy: Math.max(h * 0.62, 100 + r), r }
-  }
-  // Only the top of the globe shows here, so it is tipped back to bring South Asia into view.
-  const r = Math.min(w * 0.6, 420)
-  return { cx: w / 2, cy: h + r * 0.18, r, tilt: -24 }
+// The canvas covers the whole hero (so stars, halo and arcs can spill past the sphere), while the
+// sphere itself fills `slotRef`: a square HomeHero places inside its Container, so the globe is
+// always whole and keeps the same side gutters as the copy (right of the copy on desktop, below
+// it on tablet and phone).
+function slotLayout(canvas, slot) {
+  const c = canvas.getBoundingClientRect()
+  const s = slot.getBoundingClientRect()
+  return { cx: s.left - c.left + s.width / 2, cy: s.top - c.top + s.height / 2, r: s.width / 2 }
 }
 
 // `labels`: [{ icon, label, x, y, align }] with x/y in globe radii from its centre.
-export function ConnectedGlobe({ labels = [] }) {
+export function ConnectedGlobe({ slotRef, labels = [] }) {
   const wrapRef = useRef(null)
   const canvasRef = useRef(null)
 
   useEffect(() => {
     const wrap = wrapRef.current
-    const globe = createGlobe(canvasRef.current, {
-      layout: heroLayout,
+    const canvas = canvasRef.current
+    const globe = createGlobe(canvas, {
+      layout: () => slotLayout(canvas, slotRef.current),
       reducedMotion: reducedMotion(),
       lite: isLite(),
       onLayout: ({ cx, cy, r }) => {
@@ -38,7 +35,7 @@ export function ConnectedGlobe({ labels = [] }) {
       },
     })
     return () => globe?.destroy()
-  }, [])
+  }, [slotRef])
 
   return (
     <div ref={wrapRef} aria-hidden="true" className="globe-fallback absolute inset-0 -z-10 select-none">
@@ -50,7 +47,7 @@ export function ConnectedGlobe({ labels = [] }) {
             key={l.label}
             className="globe-label absolute flex items-center gap-2 rounded-full border border-white/10 bg-navy/75 px-3 py-1.5 text-[0.6875rem] font-semibold tracking-[0.14em] whitespace-nowrap text-white/85 uppercase"
             style={{
-              // Kept inside the hero even when the globe runs off the right edge
+              // Kept inside the hero
               left: `clamp(1rem, calc(var(--gx) + var(--gr) * ${l.x}), calc(100% - 1.5rem))`,
               top: `max(6.5rem, calc(var(--gy) + var(--gr) * ${l.y}))`,
               translate: `${{ left: '0', center: '-50%', right: '-100%' }[l.align || 'center']} -50%`,

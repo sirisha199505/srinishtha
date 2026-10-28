@@ -56,7 +56,7 @@ function SolutionPage({ solution }) {
       {studies.length > 0 && (
         <Section>
           <SectionHeading title={l.work} />
-          <CaseStudyGrid studies={studies} industryOf={(slug) => industryName(site, slug)} />
+          <CaseStudyGrid related studies={studies} industryOf={(slug) => industryName(site, slug)} />
         </Section>
       )}
 

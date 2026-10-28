@@ -24,7 +24,7 @@ function Fact({ label, children }) {
 
 function Block({ title, children }) {
   return (
-    <section className="grid gap-3 border-t border-line py-9 lg:grid-cols-12 lg:gap-10">
+    <section className="grid gap-4 border-t border-line py-9 last:pb-0 lg:grid-cols-12 lg:gap-10">
       <h2 className="text-xs font-semibold tracking-[0.14em] text-accent-strong uppercase lg:col-span-3 lg:pt-1.5">{title}</h2>
       <div className="text-[1.0625rem] leading-relaxed text-body lg:col-span-9">{children}</div>
     </section>
@@ -72,15 +72,17 @@ function CaseStudyPage({ study }) {
               </Fact>
             </dl>
             {study.url && (
-              <a
-                href={study.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => track('outbound_client_link', { client: study.client })}
-                className="mt-4 inline-flex items-center gap-1.5 border-t border-line pt-4 text-sm font-semibold text-accent-strong"
-              >
-                {labels.visit} <ArrowUpRight className="size-4" />
-              </a>
+              <div className="border-t border-line pt-4">
+                <a
+                  href={study.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('outbound_client_link', { client: study.client })}
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-strong"
+                >
+                  {labels.visit} <ArrowUpRight className="size-4" />
+                </a>
+              </div>
             )}
           </aside>
 
@@ -97,7 +99,7 @@ function CaseStudyPage({ study }) {
                 <p>{study.challenge}</p>
               </Block>
               <Block title={labels.approach}>
-                <RuleList items={study.approach} className="-mt-4" />
+                <RuleList items={study.approach} className="lg:-mt-4" />
               </Block>
               <Block title={labels.outcome}>
                 <p>{study.outcome}</p>
@@ -117,7 +119,7 @@ function CaseStudyPage({ study }) {
 
       <Section>
         <SectionHeading eyebrow="More work" title={labels.more} />
-        <CaseStudyGrid studies={more} industryOf={(slug) => industryName(site, slug)} />
+        <CaseStudyGrid related studies={more} industryOf={(slug) => industryName(site, slug)} />
       </Section>
 
       <ClosingCta ctaKey="caseStudy" />

@@ -30,7 +30,7 @@ export function SiteFooter({ company, industries, legal }) {
     <footer className="bg-navy-2 text-muted-dark">
       <Container className={cx('grid gap-10 pb-8 lg:grid-cols-12 lg:gap-10', SECTION_PT)}>
         <div className="lg:col-span-4">
-          <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="logo-white h-8 w-auto" />
+          <img src={company.logo} alt={company.name} width="160" height="34" loading="lazy" className="h-8 w-auto" />
           <p className="mt-6 max-w-sm text-[0.9375rem] leading-relaxed">{FOOTER.description}</p>
           <ul className="mt-8 space-y-3.5 text-sm">
             <li className="flex gap-3">
