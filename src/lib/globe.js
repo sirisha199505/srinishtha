@@ -1,6 +1,6 @@
-// Canvas renderer for the home hero's "connected world": a dotted Earth lit by city lights,
-// great-circle links that draw in from Hyderabad, and light trails travelling along them.
-// After the intro the globe keeps turning and links keep redrawing in staggered waves.
+// Canvas renderer for the home hero's "connected world": a dotted Earth with India lit up,
+// great-circle links that all reach out from Hyderabad, and light trails travelling outward along
+// them. After the intro the globe sways around India and links keep redrawing in staggered waves.
 // Plain 2D canvas (no WebGL): a few thousand points per frame, paused while off screen.
 
 import { LAND } from './landMask'
@@ -46,24 +46,42 @@ const CITIES = [
   ['Buenos Aires', -34.6, -58.38, 0.7], ['Santiago', -33.45, -70.67, 0.5],
 ]
 
-// Links: the first INTRO_LINKS go out from the hub in the opening sequence; the rest join the
-// loop as the globe turns, so every region shows live connections.
+// Every link starts in India (the hub) and reaches out to the world: the first INTRO_LINKS go out
+// in the opening sequence; the rest join the loop in staggered waves.
+const HUB = 'Hyderabad'
 const INTRO_LINKS = 11
 const LINKS = [
-  ['Hyderabad', 'London'], ['Hyderabad', 'Dubai'], ['Hyderabad', 'Singapore'], ['Hyderabad', 'Frankfurt'],
-  ['Hyderabad', 'Tokyo'], ['Hyderabad', 'Johannesburg'], ['Hyderabad', 'Moscow'], ['Hyderabad', 'Hong Kong'],
-  ['Hyderabad', 'Nairobi'], ['Hyderabad', 'Sydney'], ['Hyderabad', 'Riyadh'],
-  ['London', 'Dubai'], ['Dubai', 'Singapore'], ['Singapore', 'Sydney'], ['Hong Kong', 'Tokyo'],
-  ['Paris', 'Cairo'], ['Johannesburg', 'Dubai'], ['Istanbul', 'Moscow'], ['Shanghai', 'Singapore'],
-  ['Hyderabad', 'New York'], ['London', 'New York'], ['Toronto', 'London'], ['Chicago', 'Frankfurt'],
-  ['New York', 'São Paulo'], ['Mexico City', 'Madrid'], ['São Paulo', 'Lagos'], ['San Francisco', 'Tokyo'],
-  ['Los Angeles', 'Sydney'], ['San Francisco', 'New York'], ['Miami', 'Bogotá'], ['Sydney', 'Auckland'],
-  ['Buenos Aires', 'Cape Town'], ['Seattle', 'Seoul'],
-]
+  'London', 'Dubai', 'Singapore', 'Frankfurt', 'Tokyo', 'Johannesburg', 'Moscow', 'Hong Kong',
+  'Nairobi', 'Sydney', 'Riyadh',
+  'New York', 'Paris', 'Cairo', 'Shanghai', 'Istanbul', 'Jakarta', 'Toronto', 'Lagos', 'Seoul',
+  'Doha', 'São Paulo', 'Amsterdam', 'Bangkok', 'San Francisco', 'Cape Town', 'Kuala Lumpur',
+  'Madrid', 'Melbourne', 'Tashkent', 'Chicago', 'Manila', 'Stockholm',
+].map((to) => [HUB, to])
 
-// After the intro the view swings continuously between South Asia (72°E) and the Americas
-// (SWING° further west) and back, so land and live links are always in view (never the open Pacific).
-const SWING = 130, SWING_PERIOD = 110
+// Rough outline of India ([lon, lat]); land dots inside it are drawn lit up.
+const INDIA = [
+  [68.2, 23.7], [68.8, 22.3], [70.5, 20.7], [72.6, 21.1], [72.8, 19], [73.4, 16], [74.5, 12.8], [76.3, 9.5],
+  [77.5, 8.1], [78.2, 8.9], [79.3, 10.3], [80.3, 13], [80.2, 15.9], [82.3, 17], [84.9, 19.3], [86.9, 21.2],
+  [88.9, 21.6], [89, 22.9], [88.6, 24.3], [88.1, 24.6], [89.8, 25.9], [92, 25], [92.4, 22], [93.2, 22.3],
+  [94.6, 24.7], [95.3, 26.6], [97.3, 27.9], [96, 29.2], [94.6, 29.3], [91.7, 27.8], [88.8, 27.3], [88.1, 27.9],
+  [86, 27.9], [83.3, 27.4], [80.1, 28.8], [79, 30.9], [78.7, 31.9], [78.9, 32.6], [78, 34.5], [79.2, 35.5],
+  [77.8, 35.5], [75, 36.9], [73.9, 34.7], [74.4, 32.8], [75.3, 32.3], [74.5, 31.1], [73.9, 30], [71.9, 27.9],
+  [70.2, 28], [69.5, 26.7], [70.8, 25.2], [68.8, 24.3],
+]
+const inIndia = (lon, lat) => {
+  let inside = false
+  for (let i = 0, j = INDIA.length - 1; i < INDIA.length; j = i++) {
+    const [xi, yi] = INDIA[i], [xj, yj] = INDIA[j]
+    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+// Cheap bounding-box check first, so the outline test only runs for the few cells near India.
+const isIndian = (lat, lon) => lat > 6 && lat < 37.5 && lon > 68 && lon < 97.5 && inIndia(lon, lat)
+
+// After the intro the view sways gently either side of India (72°E ± SWING°), so India and its
+// rays always stay in view.
+const SWING = 45, SWING_PERIOD = 60
 // A link draws in, carries light, fades out, rests, then redraws.
 const DRAW = 1.4, FADE = 1.2, REST = 1.6
 
@@ -72,20 +90,24 @@ const toVec = (lat, lon) => {
   return [c * Math.sin(lon * DEG), Math.sin(lat * DEG), c * Math.cos(lon * DEG)]
 }
 
+// Returns { dots, india }: land dots elsewhere, and the ones inside India (always kept at full density).
 function decodeLand(thin) {
   const raw = atob(LAND.bits)
   const dots = []
+  const india = []
   for (let r = 0; r < LAND.rows; r++) {
     const lat = 90 - LAND.step / 2 - r * LAND.step
     // Keep dot spacing even on the sphere: fewer columns toward the poles.
     const stride = Math.max(1, Math.round(1 / Math.cos(lat * DEG))) * thin
-    if (thin > 1 && r % thin) continue
-    for (let c = 0; c < LAND.cols; c += stride) {
+    for (let c = 0; c < LAND.cols; c++) {
       const i = r * LAND.cols + c
-      if (raw.charCodeAt(i >> 3) & (1 << (i & 7))) dots.push(toVec(lat, -180 + LAND.step / 2 + c * LAND.step))
+      if (!(raw.charCodeAt(i >> 3) & (1 << (i & 7)))) continue
+      const lon = -180 + LAND.step / 2 + c * LAND.step
+      if (isIndian(lat, lon)) india.push(toVec(lat, lon))
+      else if (!(thin > 1 && r % thin) && c % stride === 0) dots.push(toVec(lat, lon))
     }
   }
-  return dots
+  return { dots, india }
 }
 
 // Points along the great circle a→b, lifted off the surface (higher for longer routes).
@@ -140,9 +162,9 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
   const ctx = canvas.getContext('2d')
   if (!ctx) return null
 
-  const dots = decodeLand(lite ? 2 : 1)
+  const { dots, india } = decodeLand(lite ? 2 : 1)
   const cityByName = Object.fromEntries(CITIES.map(([n, lat, lon, w]) => [n, { v: toVec(lat, lon), w }]))
-  const cities = CITIES.map(([n]) => cityByName[n])
+  const cities = CITIES.map(([n, lat, lon]) => ({ ...cityByName[n], indian: isIndian(lat, lon) }))
   const links = LINKS.filter((_, i) => !lite || i % 2 === 0 || i < INTRO_LINKS).map(([a, b], i) => ({
     pts: arcPoints(cityByName[a].v, cityByName[b].v),
     start: i < INTRO_LINKS ? 1.2 + i * 0.12 : 3 + (i - INTRO_LINKS) * 0.55,
@@ -156,6 +178,7 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
   const stars = Array.from({ length: lite ? 40 : 90 }, () => [random(), random(), random() * 0.6 + 0.15, random() * 6.28])
   const glows = new Map(LINK_COLORS.map((c) => [c, glowSprite(c.join(','))]))
   const cityGlow = glows.get(ORANGE)
+  const indiaGlow = glowSprite('255,170,70', 128)
   const whiteGlow = glowSprite(WHITE.join(','))
 
   let w = 0, h = 0, dpr = 1, geo = { cx: 0, cy: 0, r: 0 }
@@ -222,9 +245,24 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
       bands[Math.min(3, (z * 4) | 0)].rect(x - size / 2, y - size / 2, size, size)
     }
     bands.forEach((p, i) => {
-      g.fillStyle = `rgba(206,196,245,${(0.12 + i * 0.13).toFixed(2)})`
+      g.fillStyle = `rgba(206,196,245,${(0.1 + i * 0.1).toFixed(2)})`
       g.fill(p)
     })
+
+    // India: the same dots, lit warm gold so the home country stands out (a soft wider dot under
+    // a bright core reads as a glow without the cost of canvas blur on every redraw)
+    const litHalo = new Path2D(), core = new Path2D()
+    const coreSize = Math.max(1.2, size * 1.25), haloSize = coreSize * 2.2
+    for (const v of india) {
+      const [x, y, z] = project(v)
+      if (z <= 0.02) continue
+      litHalo.rect(x - haloSize / 2, y - haloSize / 2, haloSize, haloSize)
+      core.rect(x - coreSize / 2, y - coreSize / 2, coreSize, coreSize)
+    }
+    g.fillStyle = 'rgba(255,139,38,0.18)'
+    g.fill(litHalo)
+    g.fillStyle = 'rgba(255,190,110,0.95)'
+    g.fill(core)
 
     // Rim light
     g.strokeStyle = 'rgba(229,75,122,0.4)'
@@ -240,9 +278,9 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
     const { cx, cy } = geo
     const intro = easeOut(t / 1.6)
     const R = geo.r * (0.94 + 0.06 * intro)
-    // Rotation: eases in from the west to face South Asia, then keeps turning. The swing starts
-    // from rest (1 − cos), so there is no jolt when the intro ends.
-    const spun = t > 3.4 ? -(SWING / 2) * (1 - Math.cos(((t - 3.4) * 2 * Math.PI) / SWING_PERIOD)) : 0
+    // Rotation: eases in from the west to face India, then sways either side of it.
+    // (The sway eases in from rest, so there is no jolt when the intro ends.)
+    const spun = t > 3.4 ? -SWING * Math.sin(((t - 3.4) * 2 * Math.PI) / SWING_PERIOD) * easeInOut((t - 3.4) / 6) : 0
     const yaw = (reducedMotion ? 72 : 72 - 34 * (1 - easeInOut(t / 3.4)) + spun) * DEG
     const tilt = (geo.tilt ?? 12) * DEG
     const cy0 = Math.cos(yaw), sy0 = Math.sin(yaw), ct = Math.cos(tilt), st = Math.sin(tilt)
@@ -275,14 +313,23 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
     ctx.drawImage(base, 0, 0)
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-    // City lights
     ctx.globalCompositeOperation = 'lighter'
+
+    // India's glow: a warm, slowly breathing light over the subcontinent
+    const [ix, iy, iz] = project(toVec(22, 79))
+    if (iz > 0) {
+      const s = R * 0.34 * (1 + 0.05 * Math.sin(t * 1.1))
+      ctx.globalAlpha = intro * Math.min(1, iz * 1.6) * 0.55
+      ctx.drawImage(indiaGlow, ix - s, iy - s, s * 2, s * 2)
+    }
+
+    // City lights: India's at full strength, the rest of the world dimmer
     cities.forEach((c, i) => {
       const [x, y, z] = project(c.v)
       if (z <= 0.05) return
       const flicker = 0.85 + 0.15 * Math.sin(t * 1.3 + i * 1.7)
-      const s = R * (0.03 + 0.05 * c.w) * flicker
-      ctx.globalAlpha = intro * Math.min(1, z * 2.2) * (0.45 + 0.55 * c.w)
+      const s = R * (0.03 + 0.05 * c.w) * flicker * (c.indian ? 1.15 : 0.8)
+      ctx.globalAlpha = intro * Math.min(1, z * 2.2) * (0.45 + 0.55 * c.w) * (c.indian ? 1 : 0.5)
       ctx.drawImage(cityGlow, x - s, y - s, s * 2, s * 2)
     })
 
@@ -341,6 +388,12 @@ export function createGlobe(canvas, { layout, onLayout, reducedMotion = false, l
         const s = R * 0.035
         ctx.globalAlpha = fade
         ctx.drawImage(glows.get(link.color), hq[0] - s, hq[1] - s, s * 2, s * 2)
+      }
+      // Launch flash in India as each light leaves
+      if (u < 0.12 && proj[0][2] > 0) {
+        const s = R * 0.06 * (1 - u / 0.12)
+        ctx.globalAlpha = fade * (1 - u / 0.12)
+        ctx.drawImage(whiteGlow, proj[0][0] - s, proj[0][1] - s, s * 2, s * 2)
       }
       // Arrival pulse at the destination
       if (u > 0.86) {
